@@ -28,18 +28,43 @@
         .content { flex-grow: 1; padding: 25px 50px; position: relative; }
         
         /* 動態效果 */
+        /* --- 終極版訊號流動與呼吸發光引擎 --- */
+        /* 1. 精確對齊虛線長度(12+6=18)，實現完美無縫流動 */
+        /* ============ 動態效果引擎 (完美共存版) ============ */
+        /* 1. 線條流動 */
         @keyframes dash { to { stroke-dashoffset: -20; } }
-        @keyframes pulse-box { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.02); box-shadow: 0 0 20px rgba(198,40,40,0.5); } 100% { opacity: 1; transform: scale(1); } }
-        @keyframes flash-border { 0% { border-color: #333; } 50% { border-color: #FFD700; box-shadow: 0 0 20px rgba(255,215,0,0.6); } 100% { border-color: #333; } }
-        @keyframes signal-flash { 0% { opacity: 1; text-shadow: 0 0 5px #2E7D32; } 50% { opacity: 0.3; text-shadow: none; } 100% { opacity: 1; text-shadow: 0 0 5px #2E7D32; } }
-
         .line-flow { fill: none; stroke: #FFD700; stroke-width: 2.5; stroke-dasharray: 8, 4; animation: dash 0.6s linear infinite; }
         .line-solid { fill: none; stroke: #555; stroke-width: 1.5; }
         .line-backup { fill: none; stroke: var(--green); stroke-width: 2.5; stroke-dasharray: 4, 4; animation: dash 1s linear infinite; }
-        
-        .pulse-card { animation: pulse-box 1.5s infinite; border: 2px solid var(--red); }
-        .flash-box { animation: flash-border 1s infinite; }
+
+        /* 2. 紅色危機與重要觀念呼吸框 */
+        @keyframes red-pulse { 
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(198,40,40,0); border-color: #C62828; } 
+            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(198,40,40,0.8); border-color: #ff5252; } 
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(198,40,40,0); border-color: #C62828; } 
+        }
+        .pulse-card { animation: red-pulse 1.5s infinite ease-in-out; border: 2px solid #C62828 !important; }
+
+        /* 3. 黃金投影機閃爍框 */
+        @keyframes gold-flash { 
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255,215,0,0); border-color: #333; background-color: #efe; } 
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,215,0,1); border-color: #FFD700; background-color: #fffde7; } 
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(255,215,0,0); border-color: #333; background-color: #efe; } 
+        }
+        .flash-box { animation: gold-flash 1.2s infinite ease-in-out; border: 5px solid #333; }
+
+        /* 4. 綠色全省放送站呼吸框 (全新加入) */
+        @keyframes green-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(46,125,50,0); border-color: #ccc; }
+            50% { transform: scale(1.03); box-shadow: 0 0 25px rgba(46,125,50,0.8); border-color: #2E7D32; }
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(46,125,50,0); border-color: #ccc; }
+        }
+        .broadcast-box { animation: green-pulse 2s infinite ease-in-out; border: 2px dashed #ccc; }
+
+        /* 5. 訊號塔圖標閃爍 */
+        @keyframes signal-flash { 0% { opacity: 1; text-shadow: 0 0 5px #2E7D32; } 50% { opacity: 0.3; text-shadow: none; } 100% { opacity: 1; text-shadow: 0 0 5px #2E7D32; } }
         .signal-pulse { animation: signal-flash 1.2s infinite; }
+        /* =================================================== */
         
         /* 卡片與表格 */
         .card { background: white; border-radius: 10px; padding: 20px; border: 1px solid #ddd; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
@@ -52,6 +77,29 @@
         td { padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 15px; }
         tr:nth-child(even) { background: #f9f9f9; }
         .alert { color: var(--red); font-weight: bold; }
+/* 專屬 SDI 紅色通道呼吸光 */
+        @keyframes red-breathe { 
+            0% { opacity: 0.6; stroke-width: 2.5px; } 
+            50% { opacity: 1; stroke-width: 4.5px; filter: drop-shadow(0 0 6px rgba(211,47,47,0.9)); } 
+            100% { opacity: 0.6; stroke-width: 2.5px; } 
+        }
+        .line-sdi { 
+            fill: none; 
+            stroke: #d32f2f; 
+            stroke-dasharray: 12, 6; 
+            animation: dash 0.5s linear infinite, red-breathe 1.5s ease-in-out infinite; 
+        }
+/* === 強制喚醒：呼吸與閃爍引擎 === */
+        /* === 修正：投影機專用黃金閃爍與跳動引擎 === */
+        @keyframes force-flash { 
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(255,215,0,0); border-color: #333; } 
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,215,0,1); border-color: #FFD700; background-color: #fffde7; } 
+            100% { transform: scale(1); box-shadow: 0 0 0 rgba(255,215,0,0); border-color: #333; } 
+        }
+        .flash-box { 
+            animation: force-flash 1.2s infinite ease-in-out !important; 
+        }
+        /* ================================ */
     </style>
 </head>
 <body>
@@ -227,26 +275,60 @@
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">視訊核心：數位矩陣與類比保險</h2>
-        <div class="subtitle">Sony PXW-Z200 的異質雙輸路徑</div>
+        <h2 class="title">視訊核心：數位矩陣與類比/SDI 保險</h2>
+        <div class="subtitle">Sony PXW-Z200 的異質三重輸出路徑與橋接機制</div>
     </div>
     <div class="content">
-        <div style="display: flex; gap: 40px; align-items: center; height: 100%;">
-            <div style="flex: 1.2;">
-                <svg viewBox="0 0 500 250" style="width: 100%; height: auto;">
-                    <rect x="20" y="80" width="100" height="80" rx="5" fill="#444" /> <text x="70" y="125" text-anchor="middle" fill="white">Sony Z200</text>
-                    <path d="M120 100 L250 60" class="line-flow" /> <path d="M120 140 L250 180" class="line-backup" />
-                    <rect x="250" y="30" width="160" height="60" rx="5" fill="#002D62" /> <text x="330" y="65" text-anchor="middle" fill="white">MT-VIKI 16x16 HDMI</text>
-                    <rect x="250" y="160" width="160" height="60" rx="5" fill="#2E7D32" /> <text x="330" y="195" text-anchor="middle" fill="white">QY-1616V AV 矩陣</text>
+        <div style="display: flex; gap: 30px; align-items: center; height: 100%;">
+            <div style="flex: 1.3;">
+                <svg viewBox="0 0 750 350" style="width: 100%; height: auto;">
+                    <defs>
+                        <marker id="arr-gold" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#B8860B"/></marker>
+                        <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2E7D32"/></marker>
+                        <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#d32f2f"/></marker>
+                    </defs>
+
+                    <rect x="20" y="40" width="130" height="50" rx="6" fill="#e3f2fd" stroke="#1e88e5" stroke-width="2"/>
+                    <text x="85" y="70" text-anchor="middle" font-weight="bold" fill="#002D62">PTZ 攝影機</text>
+                    
+                    <rect x="20" y="140" width="130" height="80" rx="6" fill="#e3f2fd" stroke="#1e88e5" stroke-width="2"/>
+                    <text x="85" y="180" text-anchor="middle" font-size="14" font-weight="bold" fill="#002D62">Sony Z200</text>
+                    <text x="85" y="200" text-anchor="middle" font-size="12" fill="#555">(主攝影機)</text>
+
+                    <rect x="320" y="20" width="180" height="70" rx="6" fill="#002D62" stroke="#000" />
+                    <text x="410" y="60" text-anchor="middle" fill="white" font-weight="bold">MT-VIKI 16x16 HDMI</text>
+
+                    <rect x="320" y="240" width="180" height="70" rx="6" fill="#2E7D32" stroke="#000" />
+                    <text x="410" y="280" text-anchor="middle" fill="white" font-weight="bold">QY-1616V AV 矩陣</text>
+
+                    <rect x="580" y="150" width="150" height="60" rx="6" fill="#fff5f5" stroke="#d32f2f" stroke-width="2"/>
+                    <text x="655" y="175" text-anchor="middle" font-size="14" font-weight="bold" fill="#d32f2f">六樓錄播室</text>
+                    <text x="655" y="195" text-anchor="middle" font-size="12" fill="#d32f2f">影像擷取卡</text>
+
+                    <path d="M150 65 L310 50" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold)"/>
+                    <text x="235" y="45" font-size="12" font-weight="bold" fill="#B8860B" text-anchor="middle">HDMI 熱備援</text>
+
+                    <path d="M150 160 L310 75" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold)"/>
+                    <text x="220" y="125" font-size="12" font-weight="bold" fill="#B8860B" text-anchor="middle">HDMI 數位主線</text>
+
+                    <path d="M150 190 L310 260" class="line-flow" style="stroke:#2E7D32;" marker-end="url(#arr-green)"/>
+                    <text x="210" y="235" font-size="12" font-weight="bold" fill="#2E7D32" text-anchor="middle">AV 類比保底</text>
+
+                    <path d="M150 210 Q 360 180 570 180" class="line-flow" style="stroke:#d32f2f;" marker-end="url(#arr-red)"/>
+                    <text x="400" y="170" font-size="13" font-weight="bold" fill="#d32f2f" text-anchor="middle">SDI 實體獨立直出 (無視矩陣癱瘓)</text>
+
+                    <path d="M410 90 L410 230" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold)"/>
+                    <text x="480" y="115" font-size="12" font-weight="bold" fill="#B8860B" text-anchor="middle">HDMI 降頻橋接</text>
                 </svg>
             </div>
             <div style="flex: 1;">
-                <div class="card">
-                    <h3>備援機制解析</h3>
-                    <ul>
-                        <li><b>Z200：</b> 數位(HDMI)與類比(AV)同步雙通道輸出。</li>
-                        <li><b>PTZ：</b> 數位專屬，作為 HDMI 矩陣內的熱備援。</li>
-                        <li><b>QY-1616V：</b> 當 MT-VIKI HDMI 系統全面癱瘓時，維持各樓層現場影像的「最終防線」。</li>
+                <div class="card pulse-card" style="background: #fffafa;">
+                    <h3 style="color: var(--red);"><i class="fas fa-network-wired"></i> 異質三重輸出與聯鎖備援</h3>
+                    <ul style="margin-top: 15px;">
+                        <li><span style="color: var(--navy); font-weight: bold;">Z200 三通道齊發：</span> 同步輸出 HDMI(主線)、AV(類比保底) 與 <b>SDI 訊號</b>。SDI 直達六樓擷取卡，完全獨立於矩陣之外！</li>
+                        <li><span style="color: var(--gold); font-weight: bold;">PTZ 熱備援介入：</span> 若 Z200 故障，PTZ 的 HDMI 訊號早已在數位矩陣待命，主控秒切不黑屏。</li>
+                        <li><span style="color: #d32f2f; font-weight: bold;">HDMI 降頻橋接：</span> 數位矩陣可將 HDMI 訊號「橋接」送入 AV 矩陣。</li>
+                        <li><span style="color: var(--green); font-weight: bold;">QY-1616V 最終防線：</span> 當 16x16 數位矩陣全面癱瘓時，各樓層切換至 AV，維持現場影像不斷線。</li>
                     </ul>
                 </div>
             </div>
@@ -314,19 +396,21 @@
     </div>
     <div class="content">
         <div style="display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 10px;">
+            
             <div style="width: 100%; border: 2px dashed #999; padding: 15px; border-radius: 10px; background: #fafafa;">
                 <h3 style="text-align: center; color: var(--navy); margin-bottom: 10px; font-size: 22px;">HDMI 信號正常時</h3>
                 <div style="display: flex; gap: 80px; justify-content: center; align-items: flex-end;">
                     <div style="text-align: center;">
-                        <div class="flash-box" style="width: 260px; height: 130px; border: 5px solid #333; background: #efe; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold;">[ 影像 ]</div>
+                        <div style="width: 260px; height: 130px; border: 5px solid #333; background: #efe; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold;">[ 影像 ]</div>
                         <p style="margin-top: 10px; font-size: 22px; font-weight: bold; color: var(--red);">左側：女投</p>
                     </div>
                     <div style="text-align: center;">
-                        <div class="flash-box" style="width: 260px; height: 130px; border: 5px solid #333; background: #e3f2fd; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold;">[ 字幕 ]</div>
+                        <div style="width: 260px; height: 130px; border: 5px solid #333; background: #e3f2fd; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold;">[ 字幕 ]</div>
                         <p style="margin-top: 10px; font-size: 22px; font-weight: bold; color: var(--navy);">右側：男投</p>
                     </div>
                 </div>
             </div>
+
             <div style="width: 100%; border: 2px solid var(--red); padding: 15px; border-radius: 10px; background: #fff5f5;">
                 <h3 style="text-align: center; color: var(--red); margin-bottom: 10px; font-size: 22px;">各樓層HDMI矩陣當機時 (AV 保底)</h3>
                 <div style="display: flex; gap: 80px; justify-content: center; align-items: flex-end;">
@@ -340,11 +424,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <p style="margin-top: 20px; text-align: center; font-size: 20px; color: #555;">各樓層HDMI矩陣當機時，投影機切換至 AV 類比輸入，兩側投影均同步顯示<b>導師或現場影像</b>。</p>
     </div>
 </div>
-
 
 <div class="slide">
     <div class="header">
@@ -378,7 +462,111 @@
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">六樓錄播中心：全省連線中樞</h2>
+        <h2 class="title">六樓錄播室：硬體層交叉互備架構</h2>
+        <div class="subtitle">矩陣主通道與「獨立於矩陣外」的專屬保底影像線路</div>
+    </div>
+    <div class="content">
+        <div style="display: flex; gap: 30px; height: 100%; align-items: center;">
+            <div style="flex: 1.4; background: white; border-radius: 12px; border: 1px solid #ddd; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); height: 100%;">
+                <svg viewBox="0 0 750 480" width="100%" height="100%">
+                    <defs>
+                        <marker id="arr-gold" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#B8860B"/></marker>
+                        <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#d32f2f"/></marker>
+                        <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#388e3c"/></marker>
+                        <linearGradient id="g-bg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f8f9fa" /><stop offset="100%" stop-color="#e9ecef" /></linearGradient>
+                    </defs>
+
+                    <rect x="10" y="20" width="160" height="440" fill="url(#g-bg)" stroke="#ccc" rx="8" />
+                    <text x="90" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">九樓訊號源</text>
+                    
+                    <rect x="250" y="20" width="230" height="440" fill="url(#g-bg)" stroke="#ccc" rx="8" />
+                    <text x="365" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">六樓硬體處理層</text>
+                    
+                    <rect x="560" y="20" width="170" height="440" fill="#eef2f9" stroke="#b6cbf2" rx="8" />
+                    <text x="645" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#002D62">六樓錄播室直播主機群</text>
+
+                    <rect x="30" y="70" width="120" height="40" fill="#002D62" stroke="#000" rx="4" />
+                    <text x="90" y="95" text-anchor="middle" fill="white" font-size="12" font-weight="bold">9F HDMI 矩陣</text>
+
+                    <rect x="270" y="70" width="120" height="40" fill="#002D62" stroke="#000" rx="4" />
+                    <text x="330" y="95" text-anchor="middle" fill="white" font-size="12" font-weight="bold">6F HDMI 矩陣</text>
+
+                    <rect x="410" y="60" width="50" height="60" fill="#fff" stroke="#B8860B" rx="4" stroke-width="2" />
+                    <text x="435" y="85" text-anchor="middle" font-size="11" font-weight="bold" fill="#B8860B">影像/</text>
+                    <text x="435" y="105" text-anchor="middle" font-size="11" font-weight="bold" fill="#B8860B">字幕</text>
+                    <text x="435" y="135" text-anchor="middle" font-size="10" fill="#666">擷取卡</text>
+
+                    <path d="M150 90 L260 90" class="line-flow" marker-end="url(#arr-gold)" />
+                    <text x="210" y="82" font-size="12" fill="#B8860B" font-weight="bold" text-anchor="middle">HDMI 傳輸</text>
+                    <path d="M390 90 L402 90" class="line-flow" marker-end="url(#arr-gold)" />
+                    <path d="M460 90 L572 195" class="line-flow" marker-end="url(#arr-gold)" />
+
+                    <rect x="30" y="200" width="120" height="40" fill="#fff" stroke="#d32f2f" rx="4" stroke-width="2" />
+                    <text x="90" y="225" text-anchor="middle" font-size="12" font-weight="bold" fill="#d32f2f">攝影機 SDI 直出</text>
+
+                    <rect x="270" y="200" width="120" height="40" fill="#212121" stroke="#000" rx="4" />
+                    <text x="330" y="218" text-anchor="middle" fill="white" font-size="11" font-weight="bold">Blackmagic</text>
+                    <text x="330" y="232" text-anchor="middle" fill="#ccc" font-size="10">SDI 轉 HDMI</text>
+
+                    <rect x="410" y="190" width="50" height="60" fill="#fff" stroke="#d32f2f" rx="4" stroke-width="2" />
+                    <text x="435" y="215" text-anchor="middle" font-size="11" font-weight="bold" fill="#d32f2f">專屬</text>
+                    <text x="435" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#d32f2f">影像</text>
+                    <text x="435" y="265" text-anchor="middle" font-size="10" fill="#666">擷取卡</text>
+
+                    <path d="M150 220 L260 220" class="line-sdi" marker-end="url(#arr-red)" />
+                    <text x="210" y="212" font-size="12" fill="#d32f2f" font-weight="bold" text-anchor="middle">實體 SDI</text>
+                    <path d="M390 220 L402 220" class="line-sdi" marker-end="url(#arr-red)" />
+                    <path d="M460 220 L572 235" class="line-sdi" marker-end="url(#arr-red)" />
+
+                    <rect x="30" y="330" width="120" height="40" fill="#fff" stroke="#388e3c" rx="4" stroke-width="2" />
+                    <text x="90" y="355" text-anchor="middle" font-size="12" font-weight="bold" fill="#388e3c">PTZ 攝影機</text>
+
+                    <rect x="270" y="330" width="120" height="40" fill="#e8f5e9" stroke="#388e3c" rx="4" />
+                    <text x="330" y="355" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">光端機 RX 接收</text>
+
+                    <rect x="410" y="320" width="50" height="60" fill="#fff" stroke="#388e3c" rx="4" stroke-width="2" />
+                    <text x="435" y="345" text-anchor="middle" font-size="11" font-weight="bold" fill="#388e3c">專屬</text>
+                    <text x="435" y="365" text-anchor="middle" font-size="11" font-weight="bold" fill="#388e3c">影像</text>
+                    <text x="435" y="395" text-anchor="middle" font-size="10" fill="#666">擷取卡</text>
+
+                    <path d="M150 350 L260 350" class="line-backup" marker-end="url(#arr-green)" />
+                    <text x="210" y="342" font-size="12" fill="#388e3c" font-weight="bold" text-anchor="middle">光纖直連</text>
+                    <path d="M390 350 L402 350" class="line-backup" marker-end="url(#arr-green)" />
+                    <path d="M460 350 L572 275" class="line-backup" marker-end="url(#arr-green)" />
+
+                    <rect x="580" y="160" width="130" height="160" fill="#fff" stroke="#002D62" rx="8" stroke-width="2" />
+                    <text x="645" y="200" text-anchor="middle" font-size="14" font-weight="bold" fill="#002D62">OBS 直播軟體</text>
+                    <text x="645" y="225" text-anchor="middle" font-size="12" fill="#555">影像/字幕 雙軌</text>
+                    <text x="645" y="245" text-anchor="middle" font-size="12" fill="#555">隨時切換與推送</text>
+                    
+                    <rect x="595" y="270" width="100" height="30" rx="15" fill="#C62828" />
+                    <text x="645" y="290" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">YT / 會議室</text>
+                </svg>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+                <div class="card" style="border-left-color: var(--navy);">
+                    <h3 style="color: var(--navy);"><i class="fas fa-project-diagram"></i> 物理隔離的交叉互備</h3>
+                    <p>這三條通道在物理層面上<b>「完全隔離」</b>，互不干涉：</p>
+                    <ul style="margin-top: 10px; margin-left: 15px;">
+                        <li><b>通道一 (矩陣主線)：</b> 攝影機與字幕的 HDMI 訊號，經 9F 矩陣直接對接 6F 矩陣，再入擷取卡。</li>
+                        <li><b>通道二 (SDI 保底)：</b> 攝影機另拉一條實體 SDI 線，經 Blackmagic 獨立入電腦。<b>完全繞過兩層 HDMI 矩陣！</b></li>
+                        <li><b>通道三 (光纖保底)：</b> PTZ 攝影機經光端機獨立下來，亦不經過主矩陣。</li>
+                    </ul>
+                </div>
+                <div class="pulse-card" style="padding: 20px; background: #fff5f5; border-radius: 8px;">
+                    <p style="font-weight: bold; color: var(--red); font-size: 20px;"><i class="fas fa-shield-alt"></i> 硬體+軟體 終極防線</p>
+                    <p style="margin-top: 10px; font-size: 16px;">
+                        在講經直播時，<b>無論是「單台攝影機當機」或是「九樓/六樓 HDMI 矩陣有狀況」</b>，六樓電腦都能透過 OBS 軟體層立刻切換其他擷取卡畫面。保證導師講經畫面 100% 成功上傳影像會議室！
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="slide">
+    <div class="header">
+        <h2 class="title">六樓錄播室：全省連線中樞</h2>
         <div class="subtitle">應對平台大當機與網路波動的機動配置</div>
     </div>
     <div class="content">
@@ -391,7 +579,7 @@
                     <p><b>平台保底防線：</b>若 Google Meet 遭遇全省癱瘓，OBS 內已預載備用金鑰，隨時可<b>一鍵啟動 YouTube 私人串流接管任務</b>，確保不耽誤全省連線聽經！</p>
                 </div>
             </div>
-            <div style="flex: 0.8; text-align: center; border: 2px dashed #ccc; padding: 40px; border-radius: 20px;">
+            <div class="broadcast-box" style="flex: 0.8; text-align: center; border: 2px dashed #ccc; padding: 40px; border-radius: 20px;">
                 <i class="fas fa-broadcast-tower signal-pulse" style="font-size: 120px; color: var(--green); margin-bottom: 20px;"></i>
                 <h3 style="color: var(--green); font-size: 28px;">全省法音放送站</h3>
                 <p style="font-size: 16px; opacity: 0.6; margin-top: 10px;">穩態直播守護</p>
