@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>講堂影音多層次備援系統訓練教材</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>講堂影音多層次備援系統</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* 1. 核心自適應版型：16:9 比例 */
         :root {
             --navy: #002D62; --gold: #B8860B; --green: #2E7D32; --red: #C62828; --cream: #FDFBF7;
-            --flow-gold: #FFD700;    /* 訊號流顏色 */
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #222; display: grid; place-items: center; padding: 40px 0; font-family: 'Noto Sans TC', sans-serif; }
@@ -24,127 +21,155 @@
         }
         .slide::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 8px; background: linear-gradient(90deg, var(--navy), var(--gold)); z-index: 10; }
         
-        .header { padding: 30px 50px 15px; border-bottom: 2px solid var(--secondary); margin: 0 40px; }
-        .title { font-size: 34px; font-weight: 700; color: var(--navy); border-left: 10px solid var(--secondary); padding-left: 15px; }
+        .header { padding: 30px 50px 15px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: flex-end; }
+        .title { font-size: 34px; font-weight: 700; color: var(--navy); border-left: 8px solid var(--gold); padding-left: 15px; }
         .subtitle { font-size: 16px; color: #666; }
         
         .content { flex-grow: 1; padding: 25px 50px; position: relative; }
         
-        /* 2. 動態效果定義 */
-        @keyframes dash-flow { to { stroke-dashoffset: -20; } }
-        @keyframes pulse-box { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.02); } 100% { opacity: 1; transform: scale(1); } }
-        @keyframes flash-border { 0% { border-color: #333; } 50% { border-color: #B8860B; box-shadow: 0 0 15px var(--secondary); } 100% { border-color: #333; } }
-        @keyframes signal-flicker { 0% { opacity: 1; } 50% { opacity: 0.2; } 100% { opacity: 1; } }
+        /* 動態效果 */
+        @keyframes dash { to { stroke-dashoffset: -20; } }
+        @keyframes pulse-box { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.02); box-shadow: 0 0 20px rgba(198,40,40,0.5); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes flash-border { 0% { border-color: #333; } 50% { border-color: #FFD700; box-shadow: 0 0 20px rgba(255,215,0,0.6); } 100% { border-color: #333; } }
+        @keyframes signal-flash { 0% { opacity: 1; text-shadow: 0 0 5px #2E7D32; } 50% { opacity: 0.3; text-shadow: none; } 100% { opacity: 1; text-shadow: 0 0 5px #2E7D32; } }
 
-        .line-flow { fill: none; stroke: var(--flow-gold); stroke-width: 3; stroke-dasharray: 8, 4; animation: dash-flow 0.5s linear infinite; }
+        .line-flow { fill: none; stroke: #FFD700; stroke-width: 2.5; stroke-dasharray: 8, 4; animation: dash 0.6s linear infinite; }
         .line-solid { fill: none; stroke: #555; stroke-width: 1.5; }
-        .line-backup { fill: none; stroke: var(--accent-green); stroke-width: 3; stroke-dasharray: 4, 4; animation: dash-flow 1s linear infinite; }
+        .line-backup { fill: none; stroke: var(--green); stroke-width: 2.5; stroke-dasharray: 4, 4; animation: dash 1s linear infinite; }
         
-        .flicker-box { border: 3px solid #333; animation: flash-border 1s infinite; }
-        .breathing-alert { animation: breathing-red 1.2s ease-in-out infinite; border: 3px solid var(--accent-red); box-shadow: 0 0 15px rgba(198,40,40,0.4); }
-        .pulse-card { animation: pulse-box 1.5s infinite; border: 2px solid var(--accent-red); }
+        .pulse-card { animation: pulse-box 1.5s infinite; border: 2px solid var(--red); }
         .flash-box { animation: flash-border 1s infinite; }
-        .signal-pulse { animation: signal-flicker 1.2s infinite; }
+        .signal-pulse { animation: signal-flash 1.2s infinite; }
         
         /* 卡片與表格 */
-        .card { background: white; border-radius: 12px; padding: 25px; border: 1px solid #ddd; box-shadow: 0 8px 16px rgba(0,0,0,0.05); border-left: 6px solid var(--navy); }
-        .card h3 { color: var(--navy); font-size: 24px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        .card { background: white; border-radius: 10px; padding: 20px; border: 1px solid #ddd; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card h3 { color: var(--navy); font-size: 22px; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
         .card p, .card li { font-size: 16px; line-height: 1.6; color: #333; margin-bottom: 8px; }
         
         .table-wrap { height: 480px; overflow-y: auto; border: 1px solid #ccc; border-radius: 8px; background: white; }
-        table { width: 100%; border-collapse: collapse; background: white; font-size: 15px; }
-        th { background: var(--navy); color: white; padding: 12px; position: sticky; top: 0; text-align: left; }
-        td { padding: 10px 12px; border-bottom: 1px solid #eee; line-height: 1.4; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: var(--navy); color: white; padding: 12px; position: sticky; top: 0; font-size: 16px; text-align: left; }
+        td { padding: 10px 12px; border-bottom: 1px solid #eee; font-size: 15px; }
         tr:nth-child(even) { background: #f9f9f9; }
         .alert { color: var(--red); font-weight: bold; }
-        .critical { color: var(--accent-red); font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="slide">
     <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle, #002D62 0%, #001229 100%); color: white;">
-        <h1 style="font-size: 72px; margin-bottom: 20px; font-weight: 700;">影音多層次備援系統</h1>
-        <div style="width: 140px; height: 5px; background: var(--secondary); margin-bottom: 40px;"></div>
-        <p style="font-size: 32px; letter-spacing: 8px; opacity: 0.9;">全省同步講堂連線系統實務教材</p>
-        <div style="margin-top: 100px; font-size: 18px; opacity: 0.7;">
-            主講：影音組 | 技術指標：MT-VIKI 16x16 HDMI 矩陣 & 雙 ISP 網路
-        </div>
+        <h1 style="font-size: 64px; margin-bottom: 20px; letter-spacing: 2px;">講堂影音多層次備援系統</h1>
+        <div style="width: 120px; height: 5px; background: var(--gold); margin-bottom: 30px;"></div>
+        <p style="font-size: 28px; letter-spacing: 6px; opacity: 0.9;">全省講堂同步連線 • 實戰應變教材</p>
+        <p style="margin-top: 50px; font-size: 18px; color: #aaa;">核心架構：MT-VIKI 矩陣 / X32 混音 / 光端機傳輸 / 6F 錄播中樞</p>
     </div>
 </div>
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">九樓核心核心佈線與傳輸備援概念圖</h2>
-        <div class="subtitle">100% 依據實體佈線邏輯完整還原，優化配色</div>
+        <h2 class="title">九樓核心與樓層傳輸備援概念圖</h2>
+        <div class="subtitle">依據講堂實體佈線邏輯完整重建</div>
     </div>
-    <div class="content" style="padding: 10px 40px;">
-        <svg viewBox="0 0 1100 550" width="100%" height="100%">
+    <div class="content" style="padding: 10px 30px;">
+        <svg viewBox="0 0 1200 560" width="100%" height="100%">
             <defs>
                 <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#666"/></marker>
-                <marker id="arr-flow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#FFD700"/></marker>
-                <linearGradient id="grad-blue" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#ebf8ff" /><stop offset="100%" style="stop-color:#bee3f8" /></linearGradient>
-                <linearGradient id="grad-audio" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#fffdf0" /><stop offset="100%" style="stop-color:#fff9db" /></linearGradient>
+                <linearGradient id="g-box" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fdfbf7" /><stop offset="100%" stop-color="#fff9c4" /></linearGradient>
             </defs>
 
-            <rect x="20" y="50" width="220" height="240" rx="15" fill="url(#grad-blue)" stroke="#002D62" stroke-width="2" />
-            <text x="130" y="40" text-anchor="middle" font-weight="bold" font-size="16">視訊源系統</text>
-            <rect x="35" y="75" width="190" height="45" rx="8" fill="#fff" />
-            <text x="130" y="102" text-anchor="middle" font-size="12" font-weight="bold">PTZ 攝像機</text>
-            <rect x="35" y="130" width="190" height="45" rx="8" fill="#fff" />
-            <text x="130" y="157" text-anchor="middle" font-size="12" font-weight="bold">Sony Z200</text>
-            <rect x="35" y="185" width="190" height="85" rx="8" fill="#fff" stroke="#ccc" />
-            <text x="130" y="210" text-anchor="middle" font-size="11">ACT-343無線麥克風系統</text>
-            <text x="130" y="230" text-anchor="middle" font-size="11">x 2 + 有線麥克風系統</text>
-
-            <rect x="320" y="50" width="200" height="80" rx="10" fill="#002D62" stroke="#000" stroke-width="1.5"/>
-            <text x="420" y="95" text-anchor="middle" fill="white" font-weight="bold">MT-VIKI 16x16 HDMI</text>
-            <rect x="320" y="190" width="200" height="80" rx="10" fill="#2E7D32" stroke="#000" stroke-width="1.5"/>
-            <text x="420" y="235" text-anchor="middle" fill="white" font-weight="bold">QY-1616V AV 矩陣</text>
-
-            <rect x="800" y="50" width="280" height="260" rx="15" fill="url(#grad-audio)" stroke="#B8860B" stroke-width="2" />
-            <text x="940" y="40" text-anchor="middle" font-weight="bold" fill="#333">音訊核心</text>
-            <rect x="820" y="80" width="240" height="40" rx="5" fill="#fff" /> <text x="940" y="105" text-anchor="middle" font-size="14">X32 數位混音</text>
-            <rect x="820" y="130" width="240" height="40" rx="5" fill="#fff" /> <text x="940" y="155" text-anchor="middle" font-size="14">RX1202FX 類比</text>
-            <rect x="820" y="190" width="240" height="80" rx="10" fill="#B8860B" stroke="#333" />
-            <text x="940" y="225" text-anchor="middle" fill="white" font-weight="bold" font-size="13">九樓擴大機</text>
-            <text x="940" y="245" text-anchor="middle" fill="white" font-weight="bold" font-size="13">與各樓層mixer</text>
-
-            <rect x="630" y="70" width="130" height="40" rx="5" fill="#fff" stroke="#ccc" />
-            <text x="695" y="95" text-anchor="middle" font-size="11">現場拾音麥克風</text>
-
-            <rect x="630" y="125" width="130" height="35" rx="5" fill="#fff" stroke="#999" /> <text x="695" y="147" text-anchor="middle" font-size="11">ACT-343 無線系統</text>
+            <rect x="40" y="20" width="580" height="200" fill="url(#g-box)" stroke="#ddd" rx="8" />
+            <text x="330" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">視訊矩陣系統</text>
             
-            <path d="M760 90 L820 90" class="line-solid" marker-end="url(#arr)" />
-            <path d="M760 145 L820 145" class="line-solid" marker-end="url(#arr)" />
-            <path d="M760 145 L820 110" class="line-backup" marker-end="url(#arr)" /> <path d="M240 100 L320 100" class="flow-line" />
-            <path d="M520 100 L800 220" class="flow-line" />
-            <path d="M240 210 L320 230" class="flow-backup" marker-end="url(#arr)" />
+            <rect x="120" y="70" width="100" height="35" fill="#e3f2fd" stroke="#1e88e5" rx="4" /> <text x="170" y="92" text-anchor="middle" font-size="12">PTZ 攝影機</text>
+            <rect x="250" y="70" width="120" height="35" fill="#e3f2fd" stroke="#1e88e5" rx="4" /> <text x="310" y="92" text-anchor="middle" font-size="12">Sony Z200 攝影機</text>
+            <rect x="460" y="70" width="120" height="35" fill="#e3f2fd" stroke="#1e88e5" rx="4" /> <text x="520" y="92" text-anchor="middle" font-size="12">字幕投影電腦</text>
+
+            <rect x="160" y="160" width="160" height="40" fill="#002D62" stroke="#000" rx="4" /> <text x="240" y="185" text-anchor="middle" font-size="12" font-weight="bold" fill="white">16x16 HDMI 矩陣</text>
+            <rect x="440" y="160" width="140" height="40" fill="#2E7D32" stroke="#000" rx="4" /> <text x="510" y="185" text-anchor="middle" font-size="12" font-weight="bold" fill="white">QY-1616V AV 矩陣</text>
+
+            <path d="M170 105 Q 170 130 220 160" class="line-solid" marker-end="url(#arr)" />
+            <path d="M310 105 L260 160" class="line-solid" marker-end="url(#arr)" />
+            <path d="M310 105 L480 160" class="line-solid" marker-end="url(#arr)" />
+            <path d="M520 105 L280 160" class="line-solid" marker-end="url(#arr)" />
+            <path d="M520 105 Q 520 130 540 160" class="line-solid" marker-end="url(#arr)" />
+
+            <rect x="640" y="20" width="540" height="150" fill="url(#g-box)" stroke="#ddd" rx="8" />
+            <text x="910" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">音訊系統</text>
+
+            <rect x="660" y="70" width="220" height="40" fill="#fff3e0" stroke="#ff9800" rx="4" /> 
+            <text x="770" y="95" text-anchor="middle" font-size="11">ACT-343無線麥克風系統 x 2 + 有線麥克風系統</text>
+            
+            <rect x="910" y="50" width="120" height="30" fill="#f3e5f5" stroke="#3f51b5" rx="4" /> <text x="970" y="70" text-anchor="middle" font-size="12">X32 數位混音器</text>
+            <rect x="910" y="100" width="120" height="30" fill="#f3e5f5" stroke="#3f51b5" rx="4" /> <text x="970" y="120" text-anchor="middle" font-size="12">RX1202FX 類比混音器</text>
+            <rect x="1050" y="70" width="110" height="40" fill="#B8860B" stroke="#000" rx="4" /> <text x="1105" y="95" text-anchor="middle" fill="white" font-size="12" font-weight="bold">UNIKA 分配器 x2</text>
+            
+            <rect x="1030" y="125" width="140" height="35" fill="#e8f5e9" stroke="#4caf50" rx="4" /> 
+            <text x="1100" y="147" font-size="11" text-anchor="middle" font-weight="bold">九樓擴大機與各樓層mixer</text>
+
+            <path d="M880 80 Q 890 65 910 65" class="line-solid" marker-end="url(#arr)" />
+            <path d="M880 100 Q 890 115 910 115" class="line-solid" marker-end="url(#arr)" />
+            <path d="M1030 65 Q 1040 65 1050 80" class="line-solid" marker-end="url(#arr)" />
+            <path d="M1030 115 Q 1040 115 1050 100" class="line-solid" marker-end="url(#arr)" />
+            <path d="M1100 110 L1100 125" class="line-solid" marker-end="url(#arr)" />
+
+            <rect x="40" y="270" width="620" height="260" fill="url(#g-box)" stroke="#ddd" rx="8" />
+            <text x="350" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">樓層傳輸與接收系統</text>
+
+            <rect x="60" y="320" width="100" height="35" fill="#e0f7fa" stroke="#0288d1" rx="4" /> <text x="110" y="342" text-anchor="middle" font-size="12">光端機系統 1</text>
+            <rect x="200" y="320" width="100" height="35" fill="#e0f7fa" stroke="#0288d1" rx="4" /> <text x="250" y="342" text-anchor="middle" font-size="12">光端機系統 2</text>
+            <rect x="340" y="320" width="100" height="35" fill="#fff8e1" stroke="#ffb300" rx="4" /> <text x="390" y="342" text-anchor="middle" font-size="12">Cat6 HDMI 1對N</text>
+            <rect x="500" y="320" width="120" height="35" fill="#f1f8e9" stroke="#388e3c" rx="4" /> <text x="560" y="342" text-anchor="middle" font-size="12">各樓層視頻選擇器</text>
+
+            <rect x="50" y="410" width="120" height="35" fill="#fff" stroke="#999" rx="4" /> <text x="110" y="432" text-anchor="middle" font-size="12">各樓層HDMI矩陣 IN-2</text>
+            <rect x="190" y="410" width="120" height="35" fill="#fff" stroke="#999" rx="4" /> <text x="250" y="432" text-anchor="middle" font-size="12">各樓層HDMI矩陣 IN-4</text>
+            <rect x="330" y="410" width="120" height="35" fill="#fff" stroke="#999" rx="4" /> <text x="390" y="432" text-anchor="middle" font-size="12">各樓層HDMI矩陣 IN-3</text>
+            <rect x="500" y="410" width="120" height="35" fill="#fff" stroke="#999" rx="4" /> <text x="560" y="432" text-anchor="middle" font-size="12">各樓層投影機 類比輸入</text>
+
+            <rect x="200" y="480" width="120" height="35" fill="#fff" stroke="#999" rx="4" /> <text x="260" y="502" text-anchor="middle" font-size="12" font-weight="bold">各樓層投影機</text>
+
+            <path d="M220 200 Q 200 260 110 320" class="line-flow" /> <text x="130" y="250" font-size="12" fill="#002D62">彈性切換</text>
+            <path d="M240 200 L250 320" class="line-flow" /> <text x="260" y="250" font-size="12" fill="#002D62">彈性切換</text>
+            <path d="M260 200 Q 300 260 390 320" class="line-flow" /> <text x="350" y="250" font-size="12" fill="#002D62">彈性切換</text>
+            <path d="M510 200 L560 320" class="line-backup" /> <text x="545" y="250" font-size="12" fill="#2E7D32">同軸電纜</text>
+
+            <path d="M110 355 L110 410" class="line-solid" marker-end="url(#arr)" /> <text x="120" y="385" font-size="12">光纖</text>
+            <path d="M250 355 L250 410" class="line-solid" marker-end="url(#arr)" /> <text x="260" y="385" font-size="12">光纖</text>
+            <path d="M390 355 L390 410" class="line-solid" marker-end="url(#arr)" /> <text x="400" y="385" font-size="12">網路線</text>
+            <path d="M560 355 L560 410" class="line-solid" marker-end="url(#arr)" /> <text x="565" y="385" font-size="11">最後防線手動切換</text>
+
+            <path d="M110 445 L230 480" class="line-solid" marker-end="url(#arr)" /> <text x="130" y="475" font-size="12">數位輸入</text>
+            <path d="M250 445 L260 480" class="line-solid" marker-end="url(#arr)" /> <text x="265" y="465" font-size="12">數位輸入</text>
+            <path d="M390 445 L290 480" class="line-solid" stroke-dasharray="4,2" marker-end="url(#arr)" /> <text x="330" y="475" font-size="12">數位輸入</text>
         </svg>
     </div>
 </div>
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">全方位備援架構邏輯總覽</h2>
-        <div class="subtitle">異質防線：數位與類比同步運行</div>
+        <h2 class="title">全方位備援架構邏輯圖</h2>
+        <div class="subtitle">熱備援與異質備援的交織防線</div>
     </div>
     <div class="content">
         <div style="display: flex; gap: 40px; height: 100%; align-items: center;">
-            <div style="flex: 1; background: white; border-radius: 15px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee;">
-                <div style="background: var(--navy); color: white; padding: 25px; border-radius: 10px; text-align: center; margin-bottom: 30px;">
+            <div style="flex: 1; background: #eef2f9; border-radius: 15px; padding: 40px; display: flex; flex-direction: column; gap: 40px;">
+                <div style="background: var(--navy); color: white; padding: 25px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
                     <p style="font-size: 24px; font-weight: bold;">數位主系統</p>
                     <p style="font-size: 16px; opacity: 0.8;">(X32 / MT-VIKI HDMI矩陣)</p>
                 </div>
-                <div style="background: var(--green); color: white; padding: 25px; border-radius: 10px; text-align: center;">
+                <div style="text-align: center;"><i class="fas fa-arrow-down" style="font-size: 30px; color: #999;"></i></div>
+                <div style="background: var(--green); color: white; padding: 25px; border-radius: 10px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
                     <p style="font-size: 24px; font-weight: bold;">類比備援系統</p>
                     <p style="font-size: 16px; opacity: 0.8;">(RX1202FX / AV矩陣)</p>
                 </div>
             </div>
-            <div style="flex: 1;">
-                <div class="card">
-                    <h3>核心理念：確保不輟法音</h3>
-                    <p>週末講經與法會同步開啟數位與類比兩套系統。一旦主控故障，備援端已在線待命，實現講堂端<b>零拔插</b>，保障法會不斷線，老師影像不斷黑屏。</p>
+            <div style="flex: 1.2;">
+                <div class="card" style="border-left: 8px solid var(--gold); padding: 30px;">
+                    <h3><i class="fas fa-layer-group"></i> 核心設計理念</h3>
+                    <ul style="margin-top: 15px;">
+                        <li><span style="background: #e3f2fd; padding: 2px 8px; border-radius: 4px; color: var(--navy);">熱備援：</span> 雙混音器、雙攝影機同步運作，故障時自動接管。</li>
+                        <li><span style="background: #fff3e0; padding: 2px 8px; border-radius: 4px; color: #e65100;">異質備援：</span> 採用不同技術（數位 HDMI vs 同軸 AV）防止全面失效。</li>
+                        <li><span style="background: #ffebee; padding: 2px 8px; border-radius: 4px; color: var(--red);">本架構目標：</span> 當 9F 燒毀任一設備，全省講堂影音依然維持運作。</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -153,175 +178,180 @@
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">音訊系統：熱備援模式切換邏輯</h2>
-        <div class="subtitle">X32 與 RX1202FX 協同作業</div>
+        <h2 class="title">音訊雙核心：情境式主客對調</h2>
+        <div class="subtitle">X32 與 RX1202FX 透過 UNIKA 的完美同步</div>
     </div>
     <div class="content">
         <div style="display: flex; gap: 30px;">
             <div class="card" style="flex: 1; border-left-color: var(--green);">
-                <h3><i class="fas fa-calendar-alt"></i> 場景應變模式</h3>
-                <table>
-                    <tr><th>場景</th><th>主要 (主控)</th><th>輔助 (備援)</th></tr>
-                    <tr><td>週末講經</td><td><b>X32 (數位優先)</b></td><td>RX1202FX</td></tr>
-                    <tr><td>唱誦法會</td><td><b>RX1202FX (類比優先)</b></td><td>X32</td></tr>
-                </table>
+                <h3 style="color: var(--green);"><i class="fas fa-chalkboard-teacher"></i> 週二講經上課模式</h3>
+                <p>以 <b>RX1202FX (類比主控)</b> 為主，<b>X32 (數位備援)</b> 為輔。</p>
             </div>
-            <div style="flex: 1; text-align: center;">
-                <div style="background: #e3f2fd; padding: 40px; border-radius: 20px; border: 2px solid var(--navy);">
-                    <i class="fas fa-chalkboard-teacher" style="font-size: 100px; color: var(--primary);"></i>
-                    <p style="font-size: 20px; margin-top: 10px;">數位與類比系統同時送電、同時輸出</p>
-                </div>
+            <div class="card" style="flex: 1; border-left-color: var(--navy);">
+                <h3 style="color: var(--navy);"><i class="fas fa-music"></i> 法會唱誦模式</h3>
+                <p>以 <b>X32 (數位主控)</b> 為主，<b>RX1202FX (類比備援)</b> 為輔。</p>
             </div>
         </div>
-        <div class="info-card" style="margin-top: 30px; border-left-color: var(--gold);">
-            <p>雙混音器同時將聲音送入 UNIKA 分配器，各講堂端<b>零拔插</b>，實現零秒備援接管。</p>
+        <div class="card" style="margin-top: 30px; background: #fffde7; text-align: center; border: 2px dashed var(--gold);">
+            <p style="font-size: 22px; font-weight: bold; color: var(--navy);">零時差防護：UNIKA 分配器</p>
+            <p style="margin-top: 10px;">兩者訊號皆已送入 UNIKA 分配器預先調優。<br><b>一方當機，另一方聲音持續輸出，各樓層完全免人工切換！</b></p>
         </div>
     </div>
 </div>
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">無線麥克風：ACT-343 靈活備援策略</h2>
-        <div class="subtitle">專為「主法/維那」設計的頻率生命通道</div>
+        <h2 class="title">無線麥克風：ACT-343 靈活對頻備援</h2>
+        <div class="subtitle">專為「主法/維那」設計的頻率保險</div>
     </div>
     <div class="content">
-        <table>
-            <tr><th>接收主機</th><th>說明</th><th>故障備援動作</th></tr>
+        <table style="font-size: 18px;">
+            <tr><th>接收主機</th><th>負責頻道與接線路由</th><th>備援任務</th></tr>
             <tr>
-                <td>A機主機</td>
-                <td>專供主法（幻象）與維那使用。</td>
-                <td>免操作。</td>
+                <td><b>A機 (專線)</b></td>
+                <td>主法、維那、木魚、鐘鼓<br><span style="font-size: 14px; color: #555;">(僅獨立接至 X32)</span></td>
+                <td>-</td>
             </tr>
             <tr>
-                <td>B機主機</td>
-                <td>供手握、領夾使用。具備 <b>Y 接線</b> 同時送兩台混音器。</td>
-                <td>立刻掃描 A機頻率對頻，利用 B機 Y接線找回法音。</td>
+                <td><b>B機 (Y接線)</b></td>
+                <td>手握 x2、領夾 x2<br><span style="font-size: 14px; color: #555;">(每軌皆 Y接線至 X32 與 RX)</span></td>
+                <td>若 A機或 X32 故障，<b>立刻將B機對頻</b>！</td>
             </tr>
         </table>
-        <div class="card breathing-alert" style="margin-top: 30px; background: #ffebee; border-width: 5px;">
-            <h3 style="color: var(--accent-red); font-weight: bold;">危機處置</h3>
-            <p style="font-size: 18px;">若主法A機故障或X32數位系統癱瘓，義工立即調整B機頻道接收主法訊號。藉由B機實體 Y 接線，讓聲音無感導入健康的 RX1202FX 類比混音器。*註：講桌有線麥克風不經無線對頻系統。</p>
+        <div class="pulse-card" style="margin-top: 30px; padding: 20px; background: #fff5f5; border-radius: 8px;">
+            <p style="font-weight: bold; color: var(--red); font-size: 22px;"><i class="fas fa-exclamation-triangle"></i> 危機處置</p>
+            <p style="margin-top: 10px; font-size: 18px;">義工必須立刻抓起 <b>B機的空閒接收頻道</b>，迅速與主法的麥克風「同步對頻」，讓主法聲音藉由 B機的 Y接線進入安全的 RX1202FX 類比混音器中！(講桌幻象為有線，不在此限)</p>
         </div>
     </div>
 </div>
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">視訊核心：數位與異質備援源</h2>
-        <div class="subtitle">MT-VIKI 16x16 核心矩陣與保底防線</div>
+        <h2 class="title">視訊核心：數位矩陣與類比保險</h2>
+        <div class="subtitle">Sony Z200 的異質雙輸路徑</div>
     </div>
     <div class="content">
-        <div style="display: flex; gap: 40px; align-items: center;">
+        <div style="display: flex; gap: 40px; align-items: center; height: 100%;">
             <div style="flex: 1.2;">
-                <svg viewBox="0 0 500 250" style="width: 100%;">
-                    <rect x="20" y="80" width="100" height="80" rx="5" fill="#444" /> <text x="70" y="125" text-anchor="middle" fill="white">PTZ / Z200</text>
-                    <path d="M120 100 L250 60" class="flow-line" /> <path d="M120 140 L250 180" class="flow-backup" />
-                    <rect x="250" y="30" width="160" height="60" rx="5" fill="#002D62" /> <text x="330" y="65" text-anchor="middle" fill="white">HDMI 矩陣 (邁拓維矩)</text>
-                    <rect x="250" y="160" width="160" height="60" rx="5" fill="#2E7D32" /> <text x="330" y="195" text-anchor="middle" fill="white">AV 矩陣 (保底類比)</text>
+                <svg viewBox="0 0 500 250" style="width: 100%; height: auto;">
+                    <rect x="20" y="80" width="100" height="80" rx="5" fill="#444" /> <text x="70" y="125" text-anchor="middle" fill="white">Sony Z200</text>
+                    <path d="M120 100 L250 60" class="line-flow" /> <path d="M120 140 L250 180" class="line-backup" />
+                    <rect x="250" y="30" width="160" height="60" rx="5" fill="#002D62" /> <text x="330" y="65" text-anchor="middle" fill="white">MT-VIKI 16x16 HDMI</text>
+                    <rect x="250" y="160" width="160" height="60" rx="5" fill="#2E7D32" /> <text x="330" y="195" text-anchor="middle" fill="white">QY-1616V AV 矩陣</text>
                 </svg>
             </div>
             <div style="flex: 1;">
                 <div class="card">
-                    <h3>視訊源熱備援細節</h3>
-                    <p>導師講經由 Sony Z200 數位全正常的。 PTZ 攝像機做熱備援源，透過矩陣分配不同輸出路由，一旦主源失效，樓層端不黑屏，迅速切換源。</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="slide">
-    <div class="header">
-        <h2 class="title">字幕路由與保底顯示生命線</h2>
-        <div class="subtitle">專為應對網路 Meet 癱瘓之路由防線</div>
-    </div>
-    <div class="content">
-        <div class="card-grid">
-            <div class="info-card">
-                <h3>主要路由</h3>
-                <p>PC ➔ 1進4出分配器 ➔ HDMI 核心矩陣</p>
-            </div>
-            <div class="info-card" style="border-left-color: var(--accent-green);">
-                <h3>類比路由 (保底)</h3>
-                <p>PC ➔ 降頻器 ➔ AV 類比矩陣 ➔ 視頻選擇器</p>
-            </div>
-        </div>
-        <div style="margin-top: 30px; padding: 20px; border: 2px dashed var(--red); background: #ffebee;">
-            <p><b>[重要觀念]： detailed narrative 詳細補充</b></p>
-            <p>如果九樓數位HDMI核心矩陣燒毀丟失，雖然同軸電纜只有一條生命線，此時將犧牲原本「男投看字幕」之路由，九樓AV矩陣重新指派彈性路由，改為<b>指派講經上課影像</b>送出。楼层視頻選擇器切換至AV即可看影像不黑屏，此時不看字幕。</p>
-        </div>
-    </div>
-</div>
-
-<div class="slide">
-    <div class="header">
-        <h2 class="title">樓層傳輸：光纖與 Cat6 生命線</h2>
-        <div class="subtitle">9F ➔ 樓層端的三套生命線圖</div>
-    </div>
-    <div class="content">
-        <div style="display: flex; flex-direction: column; gap: 30px; margin-top: 20px;">
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="width: 250px; background: var(--navy); color: white; padding: 15px; border-radius: 8px; text-align: center;">光端機 A (現場)</div>
-                <div class="line-flow" style="width: 500px; height: 10px; background: #eee;"></div>
-                <p style="font-weight: bold; color: var(--navy);">主要 (高清影像)</p>
-            </div>
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="width: 250px; background: var(--accent-green); color: white; padding: 15px; border-radius: 8px; text-align: center;">光端機 B (PTZ畫面)</div>
-                <div class="line-backup" style="width: 500px; height: 10px; background: #eee;"></div>
-                <p style="font-weight: bold; color: var(--accent-green);">備援 (彈性路由)</p>
-            </div>
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="width: 250px; background: var(--gold); color: white; padding: 15px; border-radius: 8px; text-align: center;">Cat6 HDMI (字幕)</div>
-                <div class="line-flow" style="width: 500px; height: 10px; background: #eee; stroke: var(--gold);"></div>
-                <p style="font-weight: bold; color: var(--gold);">字幕路由 (專線)</p>
-            </div>
-        </div>
-        <p style="margin-top: 30px; font-style: italic; color: #555;">這三套線路皆由九樓核心 HDMI 矩陣獨立分配與推送，可交叉路由支援。</p>
-    </div>
-</div>
-
-<div class="slide">
-    <div class="header">
-        <h2 class="title">各講堂投影保底：男投女投分配邏輯</h2>
-        <div class="subtitle">女投現場影像 vs 男投講桌字幕</div>
-    </div>
-    <div class="content">
-        <div style="display: flex; gap: 60px; justify-content: center; align-items: center; margin-top: 40px;">
-            <div style="text-align: center;">
-                <div style="width: 250px; height: 160px; border: 5px solid #333; background: #efe; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold;">[ 現場影像 ]</div>
-                <p style="margin-top: 15px; font-size: 24px; font-weight: bold; color: var(--red);">左側：女投</p>
-            </div>
-            <div style="text-align: center;">
-                <div class="flicker-box" style="width: 250px; height: 160px; border: 5px solid #333; background: #e3f2fd; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold;">[字幕/現場影像]</div>
-                <p style="margin-top: 15px; font-size: 24px; font-weight: bold; color: var(--primary);">右側：男投 (字幕)</p>
-            </div>
-        </div>
-        <div class="card" style="margin-top: 50px; background: #fffde7; border-left-color: var(--secondary);">
-            <p><b>備援備忘錄：</b> 當 HDMI 訊號丟失時，各樓層視頻選擇器手動切換至 AV 類比輸入。類比系統同軸電纜始終送現場畫面，優先保證女投區老師畫面不黑屏（犧牲字幕，確保導師影像）。男投區通常黑屏或看影像，代價是犧牲字幕不傳送。</p>
-        </div>
-    </div>
-</div>
-
-<div class="slide">
-    <div class="header">
-        <h2 class="title">六樓錄播中樞：直播系統與武力備援</h2>
-        <div class="subtitle">網路 Isp 雙線、主備機互備、OBS 平台保底</div>
-    </div>
-    <div class="content">
-        <div style="display: flex; gap: 30px; height: 100%;">
-            <div style="flex: 1.2;">
-                <div class="info-card">
-                    <h3>戰略級備援預案：武力詳細補充</h3>
+                    <h3>備援機制解析</h3>
                     <ul>
-                        <li><span style="color: var(--primary);">網路異質備援：</span> 六樓直播系統除主 Isp(邁拓維矩 1G)外，亦具備備援 Isp（邁拓維矩 300M），透過物理切換器實現秒級網絡路由備援。</li>
-                        <li><span style="color: var(--navy);">多電腦機群互備：</span> 錄播中樞備有高配置桌機*2、筆電*2與AIO*1。每台電腦皆預裝好了 **OBS 轉播軟體**，平常分別跑影像 Meet與字幕 Meet。直播電腦故障時電腦亦不需操作，其餘OBS電腦立刻推 YouTube 私人串流生命線接管任務。</li>
-                        <li><span style="color: var(--gold);">平台備援：</span> OBS 預配置 YT 備援金鑰與主備用 Meet 帳號。Google 癱瘓時可即時更換推流地址，保障直播不黑屏。武力強大，無懈可擊！</li>
+                        <li><b>Z200：</b> 數位(HDMI)與類比(AV)同步雙通道輸出。</li>
+                        <li><b>PTZ：</b> 數位專屬，作為 HDMI 矩陣內的熱備援。</li>
+                        <li><b>QY-1616V：</b> 當 MT-VIKI HDMI 系統全面癱瘓時，維持各樓層現場影像的「最終防線」。</li>
                     </ul>
                 </div>
             </div>
-            <div style="flex: 0.8; text-align: center; border: 2px dashed #999; border-radius: 10px; padding: 40px; background: white;">
-                <i class="fas fa-server" style="font-size: 150px; opacity: 0.2;"></i>
-                <p style="margin-top: 20px;">直播機監視中</p>
+        </div>
+    </div>
+</div>
+
+<div class="slide">
+    <div class="header">
+        <h2 class="title">字幕多重備援與橋接路徑</h2>
+        <div class="subtitle">應對「特殊狀況」的線路保護</div>
+    </div>
+    <div class="content">
+        <div style="display: flex; gap: 30px;">
+            <div class="card" style="flex: 1;">
+                <h3>主路徑 (數位層)</h3>
+                <p>電腦 ➔ <b>1進4出分配器</b> ➔ MT-VIKI 16x16 HDMI</p>
+                <hr style="margin: 15px 0; border-color: #eee;">
+                <h3 style="color: var(--red);">備援路徑 (類比保底)</h3>
+                <p>電腦 ➔ HDMI延長器 ➔ <b>轉AV轉換器</b> ➔ QY-1616V AV</p>
+            </div>
+            <div class="card" style="flex: 1; border-color: var(--gold);">
+                <h3 style="color: var(--gold);">系統聯鎖 (橋接)</h3>
+                <p>從 MT-VIKI HDMI 矩陣拉出一組輸出 ➔ 轉 AV ➔ 進入 AV 矩陣。允許九樓主控隨意將任何訊號轉入類比系統。</p>
+            </div>
+        </div>
+        <div class="pulse-card" style="margin-top: 25px; padding: 20px; background: #fff5f5; border-radius: 8px;">
+            <p style="font-weight: bold; color: var(--red); font-size: 18px;">【重要觀念】</p>
+            <p>即便發生特殊狀況（如 1進4出 故障），字幕仍能透過備援路徑輸送。<b>但若 HDMI 主矩陣整台當機</b>，因同軸電纜僅有一條，必須優先保證「老師現場影像」，當天只能犧牲字幕！</p>
+        </div>
+    </div>
+</div>
+
+<div class="slide">
+    <div class="header">
+        <h2 class="title">樓層傳輸：三通道備援架構</h2>
+        <div class="subtitle">9F 至各樓層的數位生命通道</div>
+    </div>
+    <div class="content">
+        <div style="display: flex; flex-direction: column; gap: 35px; margin-top: 20px;">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="width: 250px; padding: 15px; background: var(--navy); color: white; border-radius: 8px; text-align: center; font-size: 18px;">光端機 A (現場畫面)</div>
+                <svg width="600" height="15"><line x1="0" y1="7" x2="600" y2="7" class="line-flow" /></svg>
+                <div style="font-weight: bold; color: var(--navy); font-size: 18px;">IN-2 (主畫面)</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="width: 250px; padding: 15px; background: var(--green); color: white; border-radius: 8px; text-align: center; font-size: 18px;">光端機 B (PTZ畫面)</div>
+                <svg width="600" height="15"><line x1="0" y1="7" x2="600" y2="7" class="line-flow" stroke="#2E7D32" /></svg>
+                <div style="font-weight: bold; color: var(--green); font-size: 18px;">IN-4 (備援切換)</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div style="width: 250px; padding: 15px; background: var(--gold); color: white; border-radius: 8px; text-align: center; font-size: 18px;">Cat6 HDMI (字幕)</div>
+                <svg width="600" height="15"><line x1="0" y1="7" x2="600" y2="7" class="line-flow" stroke="#B8860B" /></svg>
+                <div style="font-weight: bold; color: var(--gold); font-size: 18px;">IN-3 (專用字幕)</div>
+            </div>
+        </div>
+        <p style="margin-top: 40px; text-align: center; font-size: 18px;">這三套發射端皆為矩陣的獨立輸出。當 Cat6 線路故障，9F 可即時將字幕指定給光纖通道 A 或 B，樓層切換 Input 即可找回字幕。</p>
+    </div>
+</div>
+
+<div class="slide">
+    <div class="header">
+        <h2 class="title">講堂終端輸出：左右投影保底機制</h2>
+        <div class="subtitle">男投/女投 顯示邏輯與 AV 切換</div>
+    </div>
+    <div class="content">
+        <div style="display: flex; gap: 60px; justify-content: center; align-items: flex-end; height: 350px;">
+            <div style="text-align: center;">
+                <div class="flash-box" style="width: 320px; height: 200px; border: 6px solid #333; background: #efe; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold;">[ 現場影像 ]</div>
+                <p style="margin-top: 15px; font-size: 24px; font-weight: bold; color: var(--red);">左側：女投</p>
+            </div>
+            <div style="text-align: center;">
+                <div class="flash-box" style="width: 320px; height: 200px; border: 6px solid #333; background: #e3f2fd; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold;">[字幕/現場影像]</div>
+                <p style="margin-top: 15px; font-size: 24px; font-weight: bold; color: var(--navy);">右側：男投 (字幕)</p>
+            </div>
+        </div>
+        <p style="margin-top: 40px; text-align: center; font-size: 20px; color: #555;">HDMI 訊號遺失時，切換至 AV 選擇器，兩側投影均同步顯示<b>現場影像</b>。</p>
+    </div>
+</div>
+
+<div class="slide">
+    <div class="header">
+        <h2 class="title">10F/5F/B2 專屬：光端機音訊備援</h2>
+        <div class="subtitle">解決音源線實體干擾的終極對策</div>
+    </div>
+    <div class="content">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="background: white; border-radius: 10px; padding: 30px; border: 1px solid #ddd; text-align: center;">
+                <svg viewBox="0 0 1000 120" style="width: 100%; height: 120px;">
+                    <rect x="50" y="30" width="120" height="60" rx="8" fill="#444" /> <text x="110" y="65" text-anchor="middle" fill="white" font-size="16">九樓攝影機</text>
+                    <rect x="250" y="30" width="140" height="60" rx="8" fill="#002D62" /> <text x="320" y="65" text-anchor="middle" fill="white" font-size="16">光端機 TX</text>
+                    <rect x="470" y="30" width="140" height="60" rx="8" fill="#2E7D32" /> <text x="540" y="65" text-anchor="middle" fill="white" font-size="16">光纖交換機</text>
+                    <rect x="690" y="30" width="140" height="60" rx="8" fill="#002D62" /> <text x="760" y="65" text-anchor="middle" fill="white" font-size="16">光端機 RX</text>
+                    <rect x="910" y="30" width="80" height="60" rx="30" fill="#B8860B" /> <text x="950" y="65" text-anchor="middle" fill="white" font-size="16">混音器</text>
+
+                    <path d="M170 60 L250 60" class="line-flow" /> <text x="210" y="50" font-size="12" fill="#555" text-anchor="middle">送音視頻</text>
+                    <path d="M390 60 L470 60" class="line-flow" />
+                    <path d="M610 60 L690 60" class="line-flow" />
+                    <path d="M830 60 L910 60" class="line-flow" />
+                </svg>
+            </div>
+            <div class="card" style="border-left-color: var(--gold);">
+                <p style="font-size: 18px; line-height: 1.8;">當九樓送下來的「專用音源線」出現雜訊、漏電聲或無聲時，義工應操作樓層混音器，將輸入切換至：<br>
+                <b style="color: var(--navy); font-size: 22px;">「來自九樓攝影機的現場音」</b><br>
+                此音訊是透過光端機路徑「數位嵌入」傳輸，完美繞過了類比實體音源線的干擾。</p>
             </div>
         </div>
     </div>
@@ -329,24 +359,23 @@
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">六樓直播故障排除與危機處置</h2>
-        <div class="subtitle">請義工夥伴熟記排除次第</div>
+        <h2 class="title">六樓錄播中心：全省連線中樞</h2>
+        <div class="subtitle">應對平台大當機與網路波動的機動配置</div>
     </div>
     <div class="content">
-        <div style="display: flex; gap: 40px; height: 100%;">
+        <div style="display: flex; gap: 40px; align-items: center; height: 100%;">
             <div style="flex: 1.2;">
-                <table>
-                    <tr><th>突發狀況</th><th>備援邏輯與機制</th><th>危機處置動作</th></tr>
-                    <tr><td class="critical">1. 主電腦死機</td><td>其餘電腦(4台)已預裝 OBS 待命</td><td>立刻改用筆電或備援機 OBS 推流。</td></tr>
-                    <tr><td class="critical">2. 主 Isp (1G) 斷線</td><td>備援 Isp (300M) 始終在線</td><td>操作實體網絡切換器更換路由。</td></tr>
-                    <tr><td class="critical">3. Meet 平台大癱瘓</td><td>OBS 已配置 YT 私人串流生命線</td><td>改推推 YouTube 私人串流接管任務。</td></tr>
-                    <tr><td class="critical">4. 直播主機 Meet 掛點</td><td>OBS 備用 Meet 帳號與代碼在線</td><td>直播電腦切換備援 Meet 帳號。</td></tr>
-                </table>
+                <div class="card">
+                    <h3>戰略級直播預案</h3>
+                    <p style="margin-bottom: 15px;">錄播室配備 <b>2台桌機 + 2台筆電 + 1台AIO，共 5 台主機均預裝 OBS 轉播軟體</b>。各電腦間具備互補能力，隨時可依據法會需求調度。</p>
+                    <p style="margin-bottom: 15px;"><b>網路異質備援：</b>具備 1G / 300M 雙實體專線，透過硬體切換器可秒級切換，確保網路頻寬不斷線。</p>
+                    <p><b>平台保底防線：</b>若 Google Meet 遭遇全省癱瘓，OBS 內已預載備用金鑰，隨時可<b>一鍵啟動 YouTube 私人串流接管任務</b>，確保全省連線堅若磐石！</p>
+                </div>
             </div>
-            <div style="flex: 1; text-align: center; background: #fff; padding: 30px; border-radius: 10px; border: 1px solid #eee;">
-                <i class="fas fa-signal signal-pulse" style="font-size: 150px; color: var(--accent-green); opacity: 0.3;"></i>
-                <h3 style="color: var(--accent-green);">全省法音放送站</h3>
-                <p style="font-size: 16px; opacity: 0.6; margin-top: 10px;">UPS 不斷電系統穩壓保護中，保障 Meet 生命線正常</p>
+            <div style="flex: 0.8; text-align: center; border: 2px dashed #ccc; padding: 40px; border-radius: 20px;">
+                <i class="fas fa-broadcast-tower signal-pulse" style="font-size: 120px; color: var(--green); margin-bottom: 20px;"></i>
+                <h3 style="color: var(--green); font-size: 28px;">全省法音放送站</h3>
+                <p style="font-size: 16px; opacity: 0.6; margin-top: 10px;">7 x 24 穩態直播守護</p>
             </div>
         </div>
     </div>
@@ -354,23 +383,48 @@
 
 <div class="slide">
     <div class="header">
-        <h2 class="title">UPS 穩壓系統：講堂端保底生命線</h2>
-        <div class="subtitle">保障六樓 Meet 平台供電與網絡切換</div>
+        <h2 class="title">故障模擬與應急處置手冊 (20 種情境)</h2>
+        <div class="subtitle">請義工夥伴熟記排除次第 (可自行於代碼中修改內容)</div>
     </div>
     <div class="content">
-        <div class="info-card">
-            <h3>核心防線說明</h3>
-            <p>九樓現場影像送六樓後，各講堂端網路連線（Meet）與直播主機皆受 UPS 高品質不斷電系統保護。除停電時電力切換無縫外，UPS 亦提供高品質穩壓與瞬跳電力切換防護，確保核心網絡設備不因供電瞬時波動作導致各講堂端網路掛點、Meet 平台全癱瘓。UPS 始終保障六樓 Meet 平台與網絡生命線全正常。</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th width="8%">編號</th><th width="35%">突發狀況 (故障現象)</th><th width="37%">備援機制與邏輯</th><th width="20%">義工應對動作</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>01</td><td class="alert">法會時 X32 數位介面當機</td><td>RX1202FX 已同步輸出</td><td>免操作，檢查RX音量</td></tr>
+                    <tr><td>02</td><td class="alert">週二講經 RX1202FX 故障</td><td>X32 已同步輸出</td><td>免操作，檢查X32音量</td></tr>
+                    <tr><td>03</td><td class="alert">ACT-343 A機(主法) 故障</td><td>B機具備備援能力與 Y接線</td><td>B機迅速調頻對準主法</td></tr>
+                    <tr><td>04</td><td class="alert">1進4出 字幕線路斷裂</td><td>轉換器路徑已接至 AV 矩陣</td><td>切換 AV 矩陣指派字幕</td></tr>
+                    <tr><td>05</td><td class="alert">MT-VIKI HDMI 矩陣電源燒毀</td><td>AV 類比系統保底路徑</td><td>樓層切換視頻選擇器至 AV</td></tr>
+                    <tr><td>06</td><td class="alert">光端機 A (現場) 瞬斷</td><td>光端機 B 為第二通道可借用</td><td>樓層矩陣切至 IN-4</td></tr>
+                    <tr><td>07</td><td class="alert">Cat6 字幕傳輸線路遺失</td><td>九樓矩陣可重新指派</td><td>九樓將字幕改派光纖通道</td></tr>
+                    <tr><td>08</td><td class="alert">10F/5F/B2 音源線出現雜訊</td><td>攝影機嵌入音軌(經光端機)</td><td>樓層混音器切至光端機音軌</td></tr>
+                    <tr><td>09</td><td class="alert">Sony Z200 HDMI 孔損毀</td><td>PTZ 攝影機為熱備援</td><td>九樓矩陣切換為 PTZ</td></tr>
+                    <tr><td>10</td><td class="alert">六樓直播主機 藍屏死機</td><td>其餘4台備用機已預裝 OBS</td><td>改用備用筆電接管 Meet</td></tr>
+                    <tr><td>11</td><td class="alert">6F 主連線網路 (1G) 斷開</td><td>300M 備援專線在線待命</td><td>按壓實體網路切換器</td></tr>
+                    <tr><td>12</td><td class="alert">Meet 會議室平台全省崩潰</td><td>OBS 具備推流能力</td><td>啟動 YT 串流發送連結</td></tr>
+                    <tr><td>13</td><td class="alert">投影機不亮 (HDMI未偵測)</td><td>AV 視頻分配器後端同軸直通</td><td>強制切換投影機至 AV 輸入</td></tr>
+                    <tr><td>14</td><td class="alert">HDMI 轉 AV 轉換器過熱損壞</td><td>HDMI 矩陣橋接線路可代用</td><td>九樓重新指派橋接訊號</td></tr>
+                    <tr><td>15</td><td class="alert">樓層視頻選擇器故障</td><td>預接同軸線可繞過選擇器</td><td>將同軸線直入投影機</td></tr>
+                    <tr><td>16</td><td class="alert">A機麥克風發射器遺失/沒電</td><td>B機多頻道可隨時挪用</td><td>取 B機麥克風對頻接手</td></tr>
+                    <tr><td>17</td><td class="alert">全樓層電力暫態不穩跳電</td><td>UPS 穩壓系統保護中</td><td>檢查核心矩陣是否重啟完成</td></tr>
+                    <tr><td>18</td><td class="alert">字幕電腦主輸出口故障</td><td>顯卡通常具備第二輸出口</td><td>更換顯卡輸出孔並設定</td></tr>
+                    <tr><td>19</td><td class="alert">UNIKA 分配器供電異常</td><td>失去分配功能，需實體跳線</td><td>混音器 Out 暫改直連擴大機</td></tr>
+                    <tr><td>20</td><td class="alert">Z200 類比輸出畫面變色</td><td>利用 HDMI 矩陣降頻轉出</td><td>九樓改派 HDMI 橋接至 AV</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
 <div class="slide">
     <div style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background-color: var(--navy); color: white;">
-        <h2 style="font-size: 60px; margin-bottom: 20px;">法音宣流，共願圓滿</h2>
-        <p style="font-size: 26px; opacity: 0.8; letter-spacing: 2px;">系統的生命在於義工夥伴的演練與守護</p>
-        <div style="margin-top: 50px; padding: 25px; border: 1px solid var(--secondary); border-radius: 12px; background: rgba(255,255,255,0.05);">
-            任何突發狀況，請保持冷靜，依照備援手冊次第操作。
+        <h2 style="font-size: 56px; margin-bottom: 20px;">法音宣流，共願圓滿</h2>
+        <p style="font-size: 26px; opacity: 0.8; letter-spacing: 2px;">系統的生命在於義工的守護與演練</p>
+        <div style="margin-top: 50px; padding: 25px; border: 1px solid var(--gold); border-radius: 12px; background: rgba(255,255,255,0.05);">
+            <p style="font-size: 20px;">任何突發狀況，請保持冷靜，依照備援手冊次第操作。</p>
         </div>
     </div>
 </div>
