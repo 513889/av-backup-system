@@ -12,12 +12,19 @@
             --navy: #002D62; --gold: #B8860B; --green: #2E7D32; --red: #C62828; --cream: #FDFBF7;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #222; display: grid; place-items: center; padding: 40px 0; font-family: 'Noto Sans TC', sans-serif; }
+        body { 
+            background-color: #000; /* 簡報底色改為純黑 */
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; margin: 0; overflow: hidden; /* 鎖死滾動條 */
+            font-family: 'Noto Sans TC', sans-serif; 
+        }
         
         .slide {
             width: 1280px; height: 720px; background-color: var(--cream);
             position: relative; overflow: hidden; display: flex; flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #ddd; margin-bottom: 40px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.8); 
+            flex-shrink: 0; /* 防止被瀏覽器硬擠壓 */
+            transform-origin: center center; /* 從正中心開始縮放 */
         }
         .slide::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 8px; background: linear-gradient(90deg, var(--navy), var(--gold)); z-index: 10; }
         
@@ -636,5 +643,80 @@
     </div>
 </div>
 
+<script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+    let isScrolling = false; // 滾輪煞車鎖定閥
+
+    // 1. 簡報翻頁與顯示控制
+    function updateSlide() {
+        slides.forEach((s, i) => {
+            // 只有當前頁面顯示，其餘徹底隱藏
+            s.style.display = i === current ? 'flex' : 'none';
+        });
+        resizeToFit(); // 每次翻頁都確保比例完美
+    }
+
+    // 2. 4K/1080P/4:3 各比例螢幕自適應縮放
+    function resizeToFit() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        
+        // 我們的母片大小是 1280x720，計算與現場螢幕的差距
+        const scaleX = windowWidth / 1280;
+        const scaleY = windowHeight / 720;
+        const scale = Math.min(scaleX, scaleY); // 取最小比例，自動產生黑邊，絕不變形裁切
+        
+        slides.forEach(slide => {
+            slide.style.transform = `scale(${scale})`;
+            slide.style.transformOrigin = 'center center'; // 從正中心均勻放大
+        });
+    }
+
+    // 監聽視窗大小改變，隨時動態調整
+    window.addEventListener('resize', resizeToFit);
+    
+    // 初始化：載入時先啟動第一頁
+    updateSlide();
+
+    // 3. 綁定鍵盤與簡報筆訊號
+    window.addEventListener('keydown', (e) => {
+        // 下一頁 (空白鍵、向右、向下、PageDown)
+        if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) {
+            if (current < slides.length - 1) { current++; updateSlide(); }
+        } 
+        // 上一頁 (向左、向上、PageUp)
+        else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
+            if (current > 0) { current--; updateSlide(); }
+        }
+    });
+
+    // 4. 綁定滑鼠滾輪訊號 (加入 0.4 秒防暴衝煞車機制)
+    window.addEventListener('wheel', (e) => {
+        if (isScrolling) return; // 如果還在煞車冷卻期，直接忽略訊號
+
+        if (e.deltaY > 0) {
+            // 滾輪往下滑 -> 下一頁
+            if (current < slides.length - 1) { current++; updateSlide(); }
+        } else if (e.deltaY < 0) {
+            // 滾輪往上滑 -> 上一頁
+            if (current > 0) { current--; updateSlide(); }
+        }
+
+        isScrolling = true; // 啟動煞車鎖定
+        setTimeout(() => {
+            isScrolling = false; // 0.4 秒後解除鎖定
+        }, 400); // 400毫秒的冷卻時間，您覺得太快或太慢可以微調這個數字
+    });
+
+    // 5. 首擊進入全螢幕 (點擊畫面任意處觸發)
+    document.body.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log(`無法進入全螢幕: ${err.message}`);
+            });
+        }
+    });
+</script>
 </body>
 </html>
