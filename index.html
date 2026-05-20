@@ -709,14 +709,29 @@
         }, 400); // 400毫秒的冷卻時間，您覺得太快或太慢可以微調這個數字
     });
 
-    // 5. 首擊進入全螢幕 (點擊畫面任意處觸發)
-    document.body.addEventListener('click', () => {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.log(`無法進入全螢幕: ${err.message}`);
-            });
-        }
-    });
+    
 </script>
+
+<button onclick="toggleFS()" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: #7e22ce; padding: 12px 20px; font-size: 15px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.8);">
+        ⛶ 全螢幕 / 視窗
+    </button>
+
+    <script>
+        function toggleFS() {
+            // 1. 先偵測是否在 .exe 軟體環境中 (呼叫 Python 底層 API)
+            if (window.pywebview) {
+                window.pywebview.api.toggle_fullscreen();
+            } 
+            // 2. 如果只是用普通 Chrome 瀏覽器打開，就用原本的網頁全螢幕方法
+            else {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {});
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
+
 </body>
 </html>
