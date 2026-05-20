@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -21,11 +22,16 @@
         
         .slide {
             width: 1280px; height: 720px; background-color: var(--cream);
-            position: relative; overflow: hidden; display: flex; flex-direction: column;
+            position: relative; overflow: hidden; 
+            display: none; /* 🌟 修復閃爍：預設全數隱藏 */
+            flex-direction: column;
             box-shadow: 0 10px 50px rgba(0,0,0,0.8); 
             flex-shrink: 0; /* 防止被瀏覽器硬擠壓 */
             transform-origin: center center; /* 從正中心開始縮放 */
         }
+        /* 🌟 修復閃爍：只讓第一頁在載入時立刻顯示 */
+        .slide:first-of-type { display: flex; }
+
         .slide::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 8px; background: linear-gradient(90deg, var(--navy), var(--gold)); z-index: 10; }
         
         .header { padding: 30px 50px 15px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: flex-end; }
@@ -128,7 +134,10 @@
     <div class="content" style="padding: 10px 30px;">
         <svg viewBox="0 0 1200 560" width="100%" height="100%">
             <defs>
-                <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#666"/></marker>
+                <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#666"/></marker>
+                <marker id="arr-gold" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#FFD700"/></marker>
+                <marker id="arr-green" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2E7D32"/></marker>
+                <marker id="arr-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#d32f2f"/></marker>
                 <linearGradient id="g-box" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fdfbf7" /><stop offset="100%" stop-color="#fff9c4" /></linearGradient>
             </defs>
 
@@ -140,32 +149,41 @@
             <rect x="460" y="70" width="120" height="35" fill="#e3f2fd" stroke="#1e88e5" rx="4" /> <text x="520" y="92" text-anchor="middle" font-size="12">字幕投影電腦</text>
 
             <rect x="160" y="160" width="160" height="40" fill="#002D62" stroke="#000" rx="4" /> <text x="240" y="185" text-anchor="middle" font-size="12" font-weight="bold" fill="white">16x16 HDMI 矩陣</text>
+            
+            <rect x="330" y="160" width="100" height="40" fill="#fff5f5" stroke="#d32f2f" stroke-width="2" rx="4" /> <text x="380" y="185" text-anchor="middle" font-size="12" font-weight="bold" fill="#d32f2f">六樓錄播室</text>
+            
             <rect x="440" y="160" width="140" height="40" fill="#2E7D32" stroke="#000" rx="4" /> <text x="510" y="185" text-anchor="middle" font-size="12" font-weight="bold" fill="white">QY-1616V AV 矩陣</text>
 
-            <path d="M170 105 Q 170 130 220 160" class="line-solid" marker-end="url(#arr)" />
-            <path d="M310 105 L260 160" class="line-solid" marker-end="url(#arr)" />
-            <path d="M310 105 L480 160" class="line-solid" marker-end="url(#arr)" />
-            <path d="M520 105 L280 160" class="line-solid" marker-end="url(#arr)" />
-            <path d="M520 105 Q 520 130 540 160" class="line-solid" marker-end="url(#arr)" />
+            <path d="M170 105 Q 170 130 220 155" class="line-solid" marker-end="url(#arr)" />
+            <path d="M310 105 L262 155" class="line-solid" marker-end="url(#arr)" />
+            
+            <path d="M310 105 L378 155" class="line-sdi" marker-end="url(#arr-red)" />
+            
+            <path d="M310 105 L478 155" class="line-solid" marker-end="url(#arr)" />
+            <path d="M520 105 L282 155" class="line-solid" marker-end="url(#arr)" />
+            <path d="M520 105 Q 520 130 539 155" class="line-solid" marker-end="url(#arr)" />
 
             <rect x="640" y="20" width="540" height="150" fill="url(#g-box)" stroke="#ddd" rx="8" />
             <text x="910" y="45" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">音訊系統</text>
 
-            <rect x="660" y="70" width="220" height="40" fill="#fff3e0" stroke="#ff9800" rx="4" /> 
-            <text x="770" y="95" text-anchor="middle" font-size="11">ACT-343無線麥克風系統 x 2 + 有線麥克風系統</text>
+            <rect x="640" y="60" width="240" height="50" fill="#fff3e0" stroke="#ff9800" rx="4" /> 
+            <text x="760" y="80" text-anchor="middle" font-size="12">ACT-343 無線麥克風系統 x 2</text>
+            <text x="760" y="100" text-anchor="middle" font-size="11" fill="#555">+ 有線麥克風系統</text>
             
             <rect x="910" y="50" width="120" height="30" fill="#f3e5f5" stroke="#3f51b5" rx="4" /> <text x="970" y="70" text-anchor="middle" font-size="12">X32 數位混音器</text>
             <rect x="910" y="100" width="120" height="30" fill="#f3e5f5" stroke="#3f51b5" rx="4" /> <text x="970" y="120" text-anchor="middle" font-size="12">RX1202FX 類比混音器</text>
-            <rect x="1050" y="70" width="110" height="40" fill="#B8860B" stroke="#000" rx="4" /> <text x="1105" y="95" text-anchor="middle" fill="white" font-size="12" font-weight="bold">UNIKA音源分配器x2</text>
+            
+            <rect x="1050" y="70" width="130" height="40" fill="#B8860B" stroke="#000" rx="4" /> <text x="1115" y="95" text-anchor="middle" fill="white" font-size="12" font-weight="bold">UNIKA音源分配器x2</text>
             
             <rect x="1030" y="125" width="140" height="35" fill="#e8f5e9" stroke="#4caf50" rx="4" /> 
             <text x="1100" y="147" font-size="11" text-anchor="middle" font-weight="bold">九樓擴大機與各樓層mixer</text>
 
-            <path d="M880 80 Q 890 65 910 65" class="line-solid" marker-end="url(#arr)" />
-            <path d="M880 100 Q 890 115 910 115" class="line-solid" marker-end="url(#arr)" />
-            <path d="M1030 65 Q 1040 65 1050 80" class="line-solid" marker-end="url(#arr)" />
-            <path d="M1030 115 Q 1040 115 1050 100" class="line-solid" marker-end="url(#arr)" />
-            <path d="M1100 110 L1100 125" class="line-solid" marker-end="url(#arr)" />
+            <path d="M880 80 Q 890 65 905 65" class="line-solid" marker-end="url(#arr)" />
+            <path d="M880 100 Q 890 115 905 115" class="line-solid" marker-end="url(#arr)" />
+            <path d="M1030 65 Q 1040 65 1046 78" class="line-solid" marker-end="url(#arr)" />
+            <path d="M1030 115 Q 1040 115 1046 102" class="line-solid" marker-end="url(#arr)" />
+            
+            <path d="M1115 110 L1115 121" class="line-solid" marker-end="url(#arr)" />
 
             <rect x="40" y="270" width="620" height="260" fill="url(#g-box)" stroke="#ddd" rx="8" />
             <text x="350" y="295" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">各樓層傳輸與接收系統</text>
@@ -182,19 +200,19 @@
 
             <rect x="200" y="480" width="120" height="35" fill="#fff" stroke="#999" rx="4" /> <text x="260" y="502" text-anchor="middle" font-size="12" font-weight="bold">各樓層投影機</text>
 
-            <path d="M220 200 Q 200 260 110 320" class="line-flow" /> <text x="130" y="250" font-size="12" fill="#002D62">彈性切換</text>
-            <path d="M240 200 L250 320" class="line-flow" /> <text x="260" y="250" font-size="12" fill="#002D62">彈性切換</text>
-            <path d="M260 200 Q 300 260 390 320" class="line-flow" /> <text x="350" y="250" font-size="12" fill="#002D62">彈性切換</text>
-            <path d="M510 200 L560 320" class="line-backup" /> <text x="545" y="250" font-size="12" fill="#2E7D32">同軸電纜</text>
+            <path d="M220 200 Q 200 260 112 315" class="line-flow" marker-end="url(#arr-gold)" /> <text x="130" y="250" font-size="12" fill="#002D62">彈性切換</text>
+            <path d="M240 200 L250 315" class="line-flow" marker-end="url(#arr-gold)" /> <text x="260" y="250" font-size="12" fill="#002D62">彈性切換</text>
+            <path d="M260 200 Q 300 260 388 315" class="line-flow" marker-end="url(#arr-gold)" /> <text x="350" y="250" font-size="12" fill="#002D62">彈性切換</text>
+            <path d="M510 200 L558 315" class="line-backup" marker-end="url(#arr-green)" /> <text x="545" y="250" font-size="12" fill="#2E7D32">同軸電纜</text>
 
-            <path d="M110 355 L110 410" class="line-solid" marker-end="url(#arr)" /> <text x="120" y="385" font-size="12">光纖</text>
-            <path d="M250 355 L250 410" class="line-solid" marker-end="url(#arr)" /> <text x="260" y="385" font-size="12">光纖</text>
-            <path d="M390 355 L390 410" class="line-solid" marker-end="url(#arr)" /> <text x="400" y="385" font-size="12">網路線</text>
-            <path d="M560 355 L560 410" class="line-solid" marker-end="url(#arr)" /> <text x="565" y="385" font-size="11">經過視頻分配器</text>
+            <path d="M110 355 L110 405" class="line-solid" marker-end="url(#arr)" /> <text x="120" y="385" font-size="12">光纖</text>
+            <path d="M250 355 L250 405" class="line-solid" marker-end="url(#arr)" /> <text x="260" y="385" font-size="12">光纖</text>
+            <path d="M390 355 L390 405" class="line-solid" marker-end="url(#arr)" /> <text x="400" y="385" font-size="12">網路線</text>
+            <path d="M560 355 L560 405" class="line-solid" marker-end="url(#arr)" /> <text x="565" y="385" font-size="11">經過視頻分配器</text>
 
-            <path d="M110 445 L230 480" class="line-solid" marker-end="url(#arr)" /> <text x="130" y="475" font-size="12">數位輸入</text>
-            <path d="M250 445 L260 480" class="line-solid" marker-end="url(#arr)" /> <text x="265" y="465" font-size="12">數位輸入</text>
-            <path d="M390 445 L290 480" class="line-solid" stroke-dasharray="4,2" marker-end="url(#arr)" /> <text x="330" y="475" font-size="12">數位輸入</text>
+            <path d="M110 445 L227 476" class="line-solid" marker-end="url(#arr)" /> <text x="130" y="475" font-size="12">數位輸入</text>
+            <path d="M250 445 L258 476" class="line-solid" marker-end="url(#arr)" /> <text x="265" y="465" font-size="12">數位輸入</text>
+            <path d="M390 445 L293 476" class="line-solid" stroke-dasharray="4,2" marker-end="url(#arr)" /> <text x="330" y="475" font-size="12">數位輸入</text>
         </svg>
     </div>
 </div>
@@ -290,9 +308,9 @@
             <div style="flex: 1.3;">
                 <svg viewBox="0 0 750 350" style="width: 100%; height: auto;">
                     <defs>
-                        <marker id="arr-gold" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#B8860B"/></marker>
-                        <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2E7D32"/></marker>
-                        <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#d32f2f"/></marker>
+                        <marker id="arr-gold-2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#B8860B"/></marker>
+                        <marker id="arr-green-2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#2E7D32"/></marker>
+                        <marker id="arr-red-2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#d32f2f"/></marker>
                     </defs>
 
                     <rect x="20" y="40" width="130" height="50" rx="6" fill="#e3f2fd" stroke="#1e88e5" stroke-width="2"/>
@@ -312,19 +330,19 @@
                     <text x="655" y="175" text-anchor="middle" font-size="14" font-weight="bold" fill="#d32f2f">六樓錄播室</text>
                     <text x="655" y="195" text-anchor="middle" font-size="12" fill="#d32f2f">影像擷取卡</text>
 
-                    <path d="M150 65 L310 50" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold)"/>
+                    <path d="M150 65 L310 50" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold-2)"/>
                     <text x="235" y="45" font-size="12" font-weight="bold" fill="#B8860B" text-anchor="middle">HDMI 熱備援</text>
 
-                    <path d="M150 160 L310 75" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold)"/>
+                    <path d="M150 160 L310 75" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold-2)"/>
                     <text x="220" y="125" font-size="12" font-weight="bold" fill="#B8860B" text-anchor="middle">HDMI 數位主線</text>
 
-                    <path d="M150 190 L310 260" class="line-flow" style="stroke:#2E7D32;" marker-end="url(#arr-green)"/>
+                    <path d="M150 190 L310 260" class="line-flow" style="stroke:#2E7D32;" marker-end="url(#arr-green-2)"/>
                     <text x="210" y="235" font-size="12" font-weight="bold" fill="#2E7D32" text-anchor="middle">AV 類比保底</text>
 
-                    <path d="M150 210 Q 360 180 570 180" class="line-flow" style="stroke:#d32f2f;" marker-end="url(#arr-red)"/>
+                    <path d="M150 210 Q 360 180 570 180" class="line-flow" style="stroke:#d32f2f;" marker-end="url(#arr-red-2)"/>
                     <text x="400" y="170" font-size="13" font-weight="bold" fill="#d32f2f" text-anchor="middle">SDI 實體獨立直出 (無視矩陣癱瘓)</text>
 
-                    <path d="M410 90 L410 230" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold)"/>
+                    <path d="M410 90 L410 230" class="line-flow" style="stroke:#B8860B;" marker-end="url(#arr-gold-2)"/>
                     <text x="480" y="115" font-size="12" font-weight="bold" fill="#B8860B" text-anchor="middle">HDMI 降頻橋接</text>
                 </svg>
             </div>
@@ -477,9 +495,9 @@
             <div style="flex: 1.4; background: white; border-radius: 12px; border: 1px solid #ddd; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); height: 100%;">
                 <svg viewBox="0 0 750 480" width="100%" height="100%">
                     <defs>
-                        <marker id="arr-gold" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#B8860B"/></marker>
-                        <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#d32f2f"/></marker>
-                        <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#388e3c"/></marker>
+                        <marker id="arr-gold-3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#B8860B"/></marker>
+                        <marker id="arr-red-3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#d32f2f"/></marker>
+                        <marker id="arr-green-3" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#388e3c"/></marker>
                         <linearGradient id="g-bg" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f8f9fa" /><stop offset="100%" stop-color="#e9ecef" /></linearGradient>
                     </defs>
 
@@ -503,10 +521,10 @@
                     <text x="435" y="105" text-anchor="middle" font-size="11" font-weight="bold" fill="#B8860B">字幕</text>
                     <text x="435" y="135" text-anchor="middle" font-size="10" fill="#666">擷取卡</text>
 
-                    <path d="M150 90 L260 90" class="line-flow" marker-end="url(#arr-gold)" />
+                    <path d="M150 90 L260 90" class="line-flow" marker-end="url(#arr-gold-3)" />
                     <text x="210" y="82" font-size="12" fill="#B8860B" font-weight="bold" text-anchor="middle">HDMI 傳輸</text>
-                    <path d="M390 90 L402 90" class="line-flow" marker-end="url(#arr-gold)" />
-                    <path d="M460 90 L572 195" class="line-flow" marker-end="url(#arr-gold)" />
+                    <path d="M390 90 L402 90" class="line-flow" marker-end="url(#arr-gold-3)" />
+                    <path d="M460 90 L572 195" class="line-flow" marker-end="url(#arr-gold-3)" />
 
                     <rect x="30" y="200" width="120" height="40" fill="#fff" stroke="#d32f2f" rx="4" stroke-width="2" />
                     <text x="90" y="225" text-anchor="middle" font-size="12" font-weight="bold" fill="#d32f2f">攝影機 SDI 直出</text>
@@ -520,10 +538,10 @@
                     <text x="435" y="235" text-anchor="middle" font-size="11" font-weight="bold" fill="#d32f2f">影像</text>
                     <text x="435" y="265" text-anchor="middle" font-size="10" fill="#666">擷取卡</text>
 
-                    <path d="M150 220 L260 220" class="line-sdi" marker-end="url(#arr-red)" />
+                    <path d="M150 220 L260 220" class="line-sdi" marker-end="url(#arr-red-3)" />
                     <text x="210" y="212" font-size="12" fill="#d32f2f" font-weight="bold" text-anchor="middle">實體 SDI</text>
-                    <path d="M390 220 L402 220" class="line-sdi" marker-end="url(#arr-red)" />
-                    <path d="M460 220 L572 235" class="line-sdi" marker-end="url(#arr-red)" />
+                    <path d="M390 220 L402 220" class="line-sdi" marker-end="url(#arr-red-3)" />
+                    <path d="M460 220 L572 235" class="line-sdi" marker-end="url(#arr-red-3)" />
 
                     <rect x="30" y="330" width="120" height="40" fill="#fff" stroke="#388e3c" rx="4" stroke-width="2" />
                     <text x="90" y="355" text-anchor="middle" font-size="12" font-weight="bold" fill="#388e3c">PTZ 攝影機</text>
@@ -536,10 +554,10 @@
                     <text x="435" y="365" text-anchor="middle" font-size="11" font-weight="bold" fill="#388e3c">影像</text>
                     <text x="435" y="395" text-anchor="middle" font-size="10" fill="#666">擷取卡</text>
 
-                    <path d="M150 350 L260 350" class="line-backup" marker-end="url(#arr-green)" />
+                    <path d="M150 350 L260 350" class="line-backup" marker-end="url(#arr-green-3)" />
                     <text x="210" y="342" font-size="12" fill="#388e3c" font-weight="bold" text-anchor="middle">光纖直連</text>
-                    <path d="M390 350 L402 350" class="line-backup" marker-end="url(#arr-green)" />
-                    <path d="M460 350 L572 275" class="line-backup" marker-end="url(#arr-green)" />
+                    <path d="M390 350 L402 350" class="line-backup" marker-end="url(#arr-green-3)" />
+                    <path d="M460 350 L572 275" class="line-backup" marker-end="url(#arr-green-3)" />
 
                     <rect x="580" y="160" width="130" height="160" fill="#fff" stroke="#002D62" rx="8" stroke-width="2" />
                     <text x="645" y="200" text-anchor="middle" font-size="14" font-weight="bold" fill="#002D62">OBS 直播軟體</text>
