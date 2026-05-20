@@ -643,87 +643,109 @@
     </div>
 </div>
 
-<script>
-    const slides = document.querySelectorAll('.slide');
-    let current = 0;
-    let isScrolling = false; // 滾輪煞車鎖定閥
-
-    // 1. 簡報翻頁與顯示控制
-    function updateSlide() {
-        slides.forEach((s, i) => {
-            // 只有當前頁面顯示，其餘徹底隱藏
-            s.style.display = i === current ? 'flex' : 'none';
-        });
-        resizeToFit(); // 每次翻頁都確保比例完美
-    }
-
-    // 2. 4K/1080P/4:3 各比例螢幕自適應縮放
-    function resizeToFit() {
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-        
-        // 我們的母片大小是 1280x720，計算與現場螢幕的差距
-        const scaleX = windowWidth / 1280;
-        const scaleY = windowHeight / 720;
-        const scale = Math.min(scaleX, scaleY); // 取最小比例，自動產生黑邊，絕不變形裁切
-        
-        slides.forEach(slide => {
-            slide.style.transform = `scale(${scale})`;
-            slide.style.transformOrigin = 'center center'; // 從正中心均勻放大
-        });
-    }
-
-    // 監聽視窗大小改變，隨時動態調整
-    window.addEventListener('resize', resizeToFit);
-    
-    // 初始化：載入時先啟動第一頁
-    updateSlide();
-
-    // 3. 綁定鍵盤與簡報筆訊號
-    window.addEventListener('keydown', (e) => {
-        // 下一頁 (空白鍵、向右、向下、PageDown)
-        if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) {
-            if (current < slides.length - 1) { current++; updateSlide(); }
-        } 
-        // 上一頁 (向左、向上、PageUp)
-        else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
-            if (current > 0) { current--; updateSlide(); }
-        }
-    });
-
-    // 4. 綁定滑鼠滾輪訊號 (加入 0.4 秒防暴衝煞車機制)
-    window.addEventListener('wheel', (e) => {
-        if (isScrolling) return; // 如果還在煞車冷卻期，直接忽略訊號
-
-        if (e.deltaY > 0) {
-            // 滾輪往下滑 -> 下一頁
-            if (current < slides.length - 1) { current++; updateSlide(); }
-        } else if (e.deltaY < 0) {
-            // 滾輪往上滑 -> 上一頁
-            if (current > 0) { current--; updateSlide(); }
-        }
-
-        isScrolling = true; // 啟動煞車鎖定
-        setTimeout(() => {
-            isScrolling = false; // 0.4 秒後解除鎖定
-        }, 400); // 400毫秒的冷卻時間，您覺得太快或太慢可以微調這個數字
-    });
-
-    
-</script>
-
 <button onclick="toggleFS()" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: #7e22ce; padding: 12px 20px; font-size: 15px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.8);">
         ⛶ 全螢幕 / 視窗
     </button>
 
     <script>
+        const slides = document.querySelectorAll('.slide');
+        let current = 0;
+        let isScrolling = false; // 滾輪煞車鎖定閥
+        
+        // 🌟 新增：觸控滑動偵測變數
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        // 1. 簡報翻頁與顯示控制
+        function updateSlide() {
+            slides.forEach((s, i) => {
+                // 只有當前頁面顯示，其餘徹底隱藏
+                s.style.display = i === current ? 'flex' : 'none';
+            });
+            resizeToFit(); // 每次翻頁都確保比例完美
+        }
+
+        // 2. 4K/1080P/4:3 各比例螢幕及手機自適應縮放
+        function resizeToFit() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            // 母片大小是 1280x720
+            const scaleX = windowWidth / 1280;
+            const scaleY = windowHeight / 720;
+            
+            // 取最小比例，自動產生黑邊 (Letterbox)，確保 4:3 投影機與手機皆不變形裁切
+            const scale = Math.min(scaleX, scaleY); 
+            
+            slides.forEach(slide => {
+                slide.style.transform = `scale(${scale})`;
+                slide.style.transformOrigin = 'center center'; // 從正中心均勻放大
+            });
+        }
+
+        // 監聽視窗大小改變，隨時動態調整
+        window.addEventListener('resize', resizeToFit);
+
+        // 3. 綁定鍵盤與簡報筆訊號
+        window.addEventListener('keydown', (e) => {
+            if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) {
+                if (current < slides.length - 1) { current++; updateSlide(); }
+            } 
+            else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
+                if (current > 0) { current--; updateSlide(); }
+            }
+        });
+
+        // 4. 綁定滑鼠滾輪訊號 (防暴衝煞車機制)
+        window.addEventListener('wheel', (e) => {
+            if (isScrolling) return;
+
+            if (e.deltaY > 0) {
+                if (current < slides.length - 1) { current++; updateSlide(); }
+            } else if (e.deltaY < 0) {
+                if (current > 0) { current--; updateSlide(); }
+            }
+
+            isScrolling = true;
+            setTimeout(() => { isScrolling = false; }, 400); 
+        });
+
+        // 5. 🌟 核心升級：手機手勢滑動 (Swipe) 翻頁引擎 🌟
+        window.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, {passive: true});
+
+        window.addEventListener('touchend', (e) => {
+            let touchEndX = e.changedTouches[0].screenX;
+            let touchEndY = e.changedTouches[0].screenY;
+            
+            let deltaX = touchEndX - touchStartX;
+            let deltaY = touchEndY - touchStartY;
+
+            // 防手震：滑動距離超過 40px 才判定為翻頁意圖
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+                // 水平滑動
+                if (deltaX < 0) { // 左滑 -> 下一頁
+                    if (current < slides.length - 1) { current++; updateSlide(); }
+                } else { // 右滑 -> 上一頁
+                    if (current > 0) { current--; updateSlide(); }
+                }
+            } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 40) {
+                // 垂直滑動
+                if (deltaY < 0) { // 上滑 -> 下一頁
+                    if (current < slides.length - 1) { current++; updateSlide(); }
+                } else { // 下滑 -> 上一頁
+                    if (current > 0) { current--; updateSlide(); }
+                }
+            }
+        }, {passive: true});
+
+        // 6. 全螢幕切換引擎 (支援 .exe 與網頁雙模式)
         function toggleFS() {
-            // 1. 先偵測是否在 .exe 軟體環境中 (呼叫 Python 底層 API)
             if (window.pywebview) {
                 window.pywebview.api.toggle_fullscreen();
-            } 
-            // 2. 如果只是用普通 Chrome 瀏覽器打開，就用原本的網頁全螢幕方法
-            else {
+            } else {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen().catch(err => {});
                 } else {
@@ -731,6 +753,11 @@
                 }
             }
         }
+
+        // 初始化啟動
+        window.onload = () => {
+            updateSlide();
+        };
     </script>
 
 </body>
